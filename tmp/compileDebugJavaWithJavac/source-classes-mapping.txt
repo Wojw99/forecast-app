@@ -1,0 +1,14 @@
+com/example/forecastapp/BuildConfig.java
+ com.example.forecastapp.BuildConfig
+com/example/forecastapp/model/Dao/HistoricalDailyDao_Impl.java
+ com.example.forecastapp.model.Dao.HistoricalDailyDao_Impl
+ com.example.forecastapp.model.Dao.HistoricalDailyDao_Impl$1
+ com.example.forecastapp.model.Dao.HistoricalDailyDao_Impl$2
+ com.example.forecastapp.model.Dao.HistoricalDailyDao_Impl$3
+ com.example.forecastapp.model.Dao.HistoricalDailyDao_Impl$4
+ com.example.forecastapp.model.Dao.HistoricalDailyDao_Impl$5
+ com.example.forecastapp.model.Dao.HistoricalDailyDao_Impl$6
+ com.example.forecastapp.model.Dao.HistoricalDailyDao_Impl$7
+com/example/forecastapp/model/MyDatabase_Impl.java
+ com.example.forecastapp.model.MyDatabase_Impl
+ com.example.forecastapp.model.MyDatabase_Impl$1
