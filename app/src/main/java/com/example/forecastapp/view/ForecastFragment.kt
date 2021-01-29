@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
@@ -21,6 +22,13 @@ import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 class ForecastFragment : Fragment() {
+    // visible temperature value (0 - morn, 1 - day, 2 - eve, 3 - night)
+    private var temperatureIndex = 0
+
+    // day of week for which is the actual forecast (0 - tomorrow, 1 - day after tomorrow, etc.)
+    private var dayIndex = 0
+
+    // view model
     private lateinit var forecastViewModel: ForecastViewModel
 
     private var _binding: FragmentForecastBinding? = null
@@ -37,32 +45,109 @@ class ForecastFragment : Fragment() {
         val view = binding.root
 
         forecastViewModel = ViewModelProvider(this).get(ForecastViewModel::class.java)
+
         getForecastAndUpdateView()
         setupAdapter()
+        setupNextButtons()
 
         return view
     }
 
-    private fun setupAdapter(){
-        val list = mutableListOf("Jutro","Pojutrze","28.01")
-        val adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list)
-        binding.spinnerDays.adapter = adapter
+    /**
+     * Setup left and right arrow buttons
+     * */
+    private fun setupNextButtons(){
+        binding.buttonLeft.setOnClickListener {
+            temperatureIndex -= 1
+            updateTemperature()
+        }
+        binding.buttonRight.setOnClickListener {
+            temperatureIndex += 1
+            updateTemperature()
+        }
     }
 
+    /**
+     * Updates visible temperature value
+     * @param offset default values is 273.15 which is kelvin to celsius offset
+     * */
+    private fun updateTemperature(offset: Double = 273.15){
+        temperatureIndex = normalizeTempIndex(temperatureIndex)
+        if (forecastViewModel.forecastBody.value != null){
+            val temp = forecastViewModel.forecastBody.value!!.daily[dayIndex].temp
+            var tempValue = 0
+
+            if (temperatureIndex == 0){
+                tempValue = (temp.morn - offset).roundToInt()
+                binding.tvTempDesc.text = getText(R.string.morn)
+            } else if (temperatureIndex == 1){
+                tempValue = (temp.day - offset).roundToInt()
+                binding.tvTempDesc.text = getText(R.string.day)
+            } else if (temperatureIndex == 2){
+                tempValue = (temp.eve - offset).roundToInt()
+                binding.tvTempDesc.text = getText(R.string.eve)
+            } else if (temperatureIndex == 3){
+                tempValue = (temp.night - offset).roundToInt()
+                binding.tvTempDesc.text = getText(R.string.night)
+            }
+
+            val tempStr = "${tempValue}°C"
+            binding.tvTemp.text = tempStr
+        }
+    }
+
+    private fun normalizeTempIndex(temp: Int) : Int{
+        if (temp < 0) return 3
+        else if (temp > 3) return 0
+        return temp
+    }
+
+    /**
+     * Setup spinner control with adapter and list of next seven days
+     * */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setupAdapter(){
+        val list = getWeekList()
+        val adapter = ArrayAdapter(requireContext(), R.layout.support_simple_spinner_dropdown_item, list)
+        binding.spinnerDays.adapter = adapter
+        binding.spinnerDays.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(forecastViewModel.forecastBody.value != null && position < 7 && position >= 0) {
+                    dayIndex = position
+                    updateView(forecastViewModel.forecastBody.value!!, dayIndex)
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates a list of seven next days (string values)
+     * */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getWeekList() : MutableList<String>{
+        val list = mutableListOf(getText(R.string.tomorrow).toString(), getText(R.string.tomorrowPlus).toString())
+
+        var currentDay = LocalDateTime.now().plusDays(2)
+        for(i in 1..5){
+            currentDay = currentDay.plusDays(1)
+            val newDay = "${currentDay.dayOfMonth}.${currentDay.month.value}"
+            list.add(newDay)
+        }
+
+        return list
+    }
+
+    /**
+     * Gets a forecast parent class (welcome) from view model
+     * */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getForecastAndUpdateView(){
+        // Todo: Error handling with getOneCallForecast() method which is here
         forecastViewModel.getOneCallForecast(Constants.currentLat, Constants.currentLon)
-        forecastViewModel.forecastResponse.observe(viewLifecycleOwner, Observer { response ->
-            if(response.isSuccessful){
-                Log.d("Response", response.body()!!.current.weather[0].description)
-                // TODO: Day selecting by the user
-                updateView(response.body()!!, 0)
-            }
-            else{
-                // TODO: Create custom alert box and show an error message here
-                Log.d("Response", response.errorBody().toString())
-                Log.d("ErrorCode:", response.code().toString())
-            }
+        forecastViewModel.forecastBody.observe(viewLifecycleOwner, Observer { forecast ->
+            updateView(forecast, dayIndex)
         })
     }
 
@@ -85,9 +170,7 @@ class ForecastFragment : Fragment() {
 
         val daily = welcome.daily[dayOfWeek]
 
-        val tempValue = (daily.temp.day - 273.15).roundToInt()
-        val temp = "${tempValue}°C"
-        binding.tvTemp.text = temp
+        updateTemperature()
 
         val clouds = "${daily.clouds}%"
         binding.tvCloudsValue.text = clouds

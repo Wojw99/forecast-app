@@ -15,4 +15,16 @@
     <string name="pressure">Ciśnienie</string>
     <string name="wind_direction">Kierunek wiatru</string>
     <string name="uv_index">Index UV</string>
+
+    <!-- Week list -->
+    <string name="tomorrow">Jutro</string>
+    <string name="tomorrowPlus">Pojutrze</string>
+
+    <!-- Temperature -->
+    <string name="morn">Ranek</string>
+    <string name="day">Dzień</string>
+    <string name="eve">Wieczór</string>
+    <string name="night">Noc</string>
+    <string name="min">Minimalna</string>
+    <string name="max">Maksymalna</string>
 </resources>
