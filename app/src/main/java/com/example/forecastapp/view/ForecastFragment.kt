@@ -1,7 +1,10 @@
 package com.example.forecastapp.view
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +22,10 @@ import com.example.forecastapp.R
 import com.example.forecastapp.databinding.FragmentForecastBinding
 import com.example.forecastapp.model.Welcome
 import com.example.forecastapp.viewmodel.ForecastViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
@@ -47,10 +56,60 @@ class ForecastFragment : Fragment() {
         forecastViewModel = ViewModelProvider(this).get(ForecastViewModel::class.java)
 
         getForecastAndUpdateView()
+
         setupAdapter()
         setupNextButtons()
+        setupChangeButton()
 
         return view
+    }
+
+    /**
+     * Gets a forecast parent class (welcome) from view model
+     * */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getForecastAndUpdateView(){
+        try{
+            if(ForecastViewModel.userCity.isEmpty())
+                forecastViewModel.getOneCallForecast(ForecastViewModel.defaultLat, ForecastViewModel.defaultLon)
+            else
+                forecastViewModel.getOneCallForecast(ForecastViewModel.userCity)
+        } catch(ex: IOException){
+            Toast.makeText(requireContext(), ex.message, Toast.LENGTH_SHORT).show()
+        }
+        forecastViewModel.forecastBody.observe(viewLifecycleOwner, Observer { forecast ->
+            updateView(forecast, dayIndex)
+        })
+    }
+
+    /**
+     * Setup changing a forecast city by the user
+     * */
+    private fun setupChangeButton(){
+        binding.tvCity.setOnClickListener {
+            val dialog = AlertDialog.Builder(requireContext())
+            dialog.setTitle("Change your city:")
+
+            val editText = EditText(requireContext())
+            editText.inputType = InputType.TYPE_CLASS_TEXT
+            dialog.setView(editText)
+
+            dialog.setPositiveButton("Ok") { dialogInterface: DialogInterface, _: Int ->
+                val text = editText.text.toString()
+                if(text.isNotEmpty()){
+                    forecastViewModel.getOneCallForecast(text)
+                }
+                else{
+                    dialogInterface.cancel()
+                    Toast.makeText(requireContext(),"The field was empty!",Toast.LENGTH_SHORT).show()
+                }
+            }
+            dialog.setNegativeButton("Cancel") { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.cancel()
+            }
+
+            dialog.show()
+        }
     }
 
     /**
@@ -140,28 +199,17 @@ class ForecastFragment : Fragment() {
     }
 
     /**
-     * Gets a forecast parent class (welcome) from view model
-     * */
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getForecastAndUpdateView(){
-        // Todo: Error handling with getOneCallForecast() method which is here
-        forecastViewModel.getOneCallForecast(Constants.currentLat, Constants.currentLon)
-        forecastViewModel.forecastBody.observe(viewLifecycleOwner, Observer { forecast ->
-            updateView(forecast, dayIndex)
-        })
-    }
-
-    /**
      * Update view data with selected day info
      * @param dayOfWeek selected forecast day (0 - tomorrow, 1 - day after tomorrow, etc.)
      * */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateView(welcome: Welcome, dayOfWeek: Int){
+        // Todo: weather icon changing
         val directionX = if (welcome.lon > 0) "E" else "W"
         val directionY = if (welcome.lat > 0) "N" else "S"
         val coords = "${welcome.lat} $directionY, ${welcome.lon} $directionX"
         binding.tvCoord.text = coords
-        binding.tvCity.text = welcome.timezone
+        binding.tvCity.text = forecastViewModel.forecastCity
 
         val days = 1 + dayOfWeek
         val forecastDate = LocalDateTime.now().plusDays(days.toLong())
