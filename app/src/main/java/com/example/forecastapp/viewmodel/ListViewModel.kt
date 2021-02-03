@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.forecastapp.model.Welcome
+import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.model.repository.ForecastRepository
 import kotlinx.coroutines.launch
 

@@ -40,6 +40,19 @@ class ListFragment : Fragment() {
         buttonentercorrect.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_listOpenFragment)
         }
+
+        buttonentercorrect2.setOnClickListener {
+            findNavController().navigate(R.id.action_listFragment_to_listOpenFragment)
+        }
+        buttonentercorrect3.setOnClickListener {
+            findNavController().navigate(R.id.action_listFragment_to_listOpenFragment)
+        }
+        buttonentercorrect4.setOnClickListener {
+            findNavController().navigate(R.id.action_listFragment_to_listOpenFragment)
+        }
+        buttonentercorrect5.setOnClickListener {
+            findNavController().navigate(R.id.action_listFragment_to_listOpenFragment)
+        }
     }
 
 /*

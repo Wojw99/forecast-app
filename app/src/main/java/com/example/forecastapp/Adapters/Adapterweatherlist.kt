@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.forecastapp.R
-import com.example.forecastapp.model.Welcome
+//import com.example.forecastapp.model.Welcome
 
 /*
 class Adapterweatherlist(var weatherhistory: LiveData<Welcome>): RecyclerView.Adapter<Adapterweatherlist.Holder>() {

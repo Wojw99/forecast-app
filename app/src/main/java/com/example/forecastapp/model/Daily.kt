@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 
 //const val CURRENT_WEATHER_ID=0
 //@Entity(tableName = "tab_historicalweather")
+/*
 data class Daily(
     @SerializedName("clouds")
     val clouds: Double,
@@ -38,7 +39,10 @@ data class Daily(
     @SerializedName("wind_speed")
     val windSpeed: Double
 )
+
+ */
 //{
 //@PrimaryKey(autoGenerate = false)
 //var id: Int= CURRENT_WEATHER_ID
 //}
+
