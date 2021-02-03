@@ -16,7 +16,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
 class WelcomeActivity : AppCompatActivity() {
-    private val ACCESS_LOCATION_CODE = 1
+    private val locationCode = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +26,9 @@ class WelcomeActivity : AppCompatActivity() {
         findUserLocation()
     }
 
+    /**
+     * Checks if user gave permissions and searches for his geolocation
+     * */
     private fun findUserLocation(){
         val accessFineLocation = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         val accessCoarseLocation = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -48,7 +51,9 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    // Todo: Test canceling permissions and application working without them. For now it work.
+    /**
+     * Gets permissions from user and shows alert to them
+     * */
     private fun requestLocationPermissions(permission: String){
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
             AlertDialog.Builder(this)
@@ -57,22 +62,25 @@ class WelcomeActivity : AppCompatActivity() {
                 .setPositiveButton("OK") { _ : DialogInterface, _ : Int ->
                     ActivityCompat.requestPermissions(this@WelcomeActivity,
                         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                        ACCESS_LOCATION_CODE)
+                        locationCode)
                 }
                 .setNegativeButton("Cancel") { _ : DialogInterface, _ : Int -> }
                 .create().show()
         } else {
-            ActivityCompat.requestPermissions(this, arrayOf(permission), ACCESS_LOCATION_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(permission), locationCode)
         }
     }
 
+    /**
+     * Part of requestLocationPermissions() scope. Shows alert to the user.
+     * */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == ACCESS_LOCATION_CODE){
+        if(requestCode == locationCode){
             if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this, "Permission granted!", Toast.LENGTH_SHORT).show()

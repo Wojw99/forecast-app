@@ -27,5 +27,16 @@
     <string name="night">Noc</string>
     <string name="min">Minimalna</string>
     <string name="max">Maksymalna</string>
+
+    <!-- Other -->
     <string name="welcome">Witaj!</string>
+    <string name="fbutton_description">Zapisz pogodę</string>
+
+    <!-- Alerts -->
+    <string name="city_changing">Zmień miasto</string>
+    <string name="field_empty">Pole było puste!</string>
+    <string name="cancel">Anuluj</string>
+    <string name="ok">Ok</string>
+
+
 </resources>

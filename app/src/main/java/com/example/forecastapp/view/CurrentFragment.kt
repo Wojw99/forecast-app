@@ -1,14 +1,10 @@
 package com.example.forecastapp.view
 
-import android.Manifest
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,20 +12,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.forecastapp.Constants
+import com.example.forecastapp.R
 import com.example.forecastapp.databinding.FragmentCurrentBinding
-import com.example.forecastapp.model.Welcome
-import com.example.forecastapp.viewmodel.CurrentViewModel
+import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.viewmodel.ForecastViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
@@ -58,7 +48,6 @@ class CurrentFragment : Fragment() {
         return view
     }
 
-
     /**
      * Gets a forecast parent class (welcome) from view model
      * */
@@ -83,24 +72,28 @@ class CurrentFragment : Fragment() {
      * */
     private fun setupChangeButton(){
         binding.tvCity.setOnClickListener {
+            lifecycleScope.launch {
+                AnimationHelper.clickAnimate(binding.tvCity)
+            }
+
             val dialog = AlertDialog.Builder(requireContext())
-            dialog.setTitle("Change your city:")
+            dialog.setTitle(getText(R.string.city_changing))
 
             val editText = EditText(requireContext())
             editText.inputType = InputType.TYPE_CLASS_TEXT
             dialog.setView(editText)
 
-            dialog.setPositiveButton("Ok") { dialogInterface: DialogInterface, _: Int ->
+            dialog.setPositiveButton(getText(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
                 val text = editText.text.toString()
                 if(text.isNotEmpty()){
                     forecastViewModel.getOneCallForecast(text)
                 }
                 else{
                     dialogInterface.cancel()
-                    Toast.makeText(requireContext(),"The field was empty!",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),getText(R.string.field_empty),Toast.LENGTH_SHORT).show()
                 }
             }
-            dialog.setNegativeButton("Cancel") { dialogInterface: DialogInterface, _: Int ->
+            dialog.setNegativeButton(getText(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.cancel()
             }
 
@@ -108,12 +101,9 @@ class CurrentFragment : Fragment() {
         }
     }
 
-//    private suspend fun applyAnimations(){
-//        binding.buttonOk.animate().alpha(0f).duration = 500L
-//        delay(500)
-//        binding.buttonOk.animate().alpha(1f).duration = 500L
-//    }
-
+    /**
+     * Update view data with current weather for selected day
+     * */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateView(welcome: Welcome){
         // Todo: weather icon changing

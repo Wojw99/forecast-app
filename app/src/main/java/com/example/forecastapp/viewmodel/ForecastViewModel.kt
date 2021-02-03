@@ -7,10 +7,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.forecastapp.model.Welcome
+import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.model.repository.ForecastRepository
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 class ForecastViewModel : ViewModel() {
     val forecastBody: MutableLiveData<Welcome> = MutableLiveData()

@@ -3,7 +3,7 @@ package com.example.forecastapp.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.forecastapp.model.Welcome
+import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.model.repository.ForecastRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response

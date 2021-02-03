@@ -1,7 +1,6 @@
 package com.example.forecastapp.model.api
-import com.example.forecastapp.model.Welcome
+import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.model.geocoding.Geocoding
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
