@@ -1,35 +1,31 @@
 package com.example.forecastapp.view
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.location.Location
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.forecastapp.Constants
+import com.example.forecastapp.R
 import com.example.forecastapp.databinding.FragmentCurrentBinding
-import com.example.forecastapp.model.Welcome
-import com.example.forecastapp.viewmodel.CurrentViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.delay
+import com.example.forecastapp.model.welcome.Welcome
+import com.example.forecastapp.viewmodel.ForecastViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 class CurrentFragment : Fragment() {
-    private lateinit var currentViewModel: CurrentViewModel
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var forecastViewModel: ForecastViewModel
 
     private var _binding: FragmentCurrentBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
@@ -44,66 +40,78 @@ class CurrentFragment : Fragment() {
         _binding = FragmentCurrentBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        currentViewModel = ViewModelProvider(this).get(CurrentViewModel::class.java)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        //getForecastForLastLocation()
+        forecastViewModel = ViewModelProvider(this).get(ForecastViewModel::class.java)
         getForecastAndUpdateView()
 
-//        binding.buttonOk.setOnClickListener {
-//            lifecycleScope.launch {
-//                applyAnimations()
-//            }
-//        }
+        setupChangeButton()
 
         return view
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getForecastForLastLocation(){
-        val accessFineLocation = ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-        val accessCoarseLocation = ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
-        if (accessFineLocation != PackageManager.PERMISSION_GRANTED && accessCoarseLocation != PackageManager.PERMISSION_GRANTED) {
-            return
-        }
-
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if(location != null){
-                Constants.currentLat = location.latitude
-                Constants.currentLon = location.longitude
-                getForecastAndUpdateView()
-            }
-        }
-    }
-
+    /**
+     * Gets a forecast parent class (welcome) from view model
+     * */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getForecastAndUpdateView(){
-        currentViewModel.getOneCallForecast(Constants.currentLat, Constants.currentLon)
-        currentViewModel.forecastResponse.observe(viewLifecycleOwner, Observer { response ->
-            if(response.isSuccessful){
-                Log.d("Response", response.body()!!.current.weather[0].description)
-                updateView(response.body()!!)
-            }
-            else{
-                // TODO: Create custom alert box and show here an error message
-                Log.d("Response", response.errorBody().toString())
-                Log.d("ErrorCode:", response.code().toString())
-            }
+        try{
+            if(ForecastViewModel.userCity.isEmpty())
+                forecastViewModel.getOneCallForecast(ForecastViewModel.defaultLat, ForecastViewModel.defaultLon)
+            else
+                forecastViewModel.getOneCallForecast(ForecastViewModel.userCity)
+
+        } catch(ex: Exception){
+            Toast.makeText(requireContext(), ex.message, Toast.LENGTH_SHORT).show()
+        }
+        forecastViewModel.forecastBody.observe(viewLifecycleOwner, Observer { forecast ->
+            updateView(forecast)
         })
     }
 
-//    private suspend fun applyAnimations(){
-//        binding.buttonOk.animate().alpha(0f).duration = 500L
-//        delay(500)
-//        binding.buttonOk.animate().alpha(1f).duration = 500L
-//    }
+    /**
+     * Setup changing a forecast city by the user
+     * */
+    private fun setupChangeButton(){
+        binding.tvCity.setOnClickListener {
+            lifecycleScope.launch {
+                AnimationHelper.clickAnimate(binding.tvCity)
+            }
 
+            val dialog = AlertDialog.Builder(requireContext())
+            dialog.setTitle(getText(R.string.city_changing))
+
+            val editText = EditText(requireContext())
+            editText.inputType = InputType.TYPE_CLASS_TEXT
+            dialog.setView(editText)
+
+            dialog.setPositiveButton(getText(R.string.ok)) { dialogInterface: DialogInterface, _: Int ->
+                val text = editText.text.toString()
+                if(text.isNotEmpty()){
+                    forecastViewModel.getOneCallForecast(text)
+                }
+                else{
+                    dialogInterface.cancel()
+                    Toast.makeText(requireContext(),getText(R.string.field_empty),Toast.LENGTH_SHORT).show()
+                }
+            }
+            dialog.setNegativeButton(getText(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.cancel()
+            }
+
+            dialog.show()
+        }
+    }
+
+    /**
+     * Update view data with current weather for selected day
+     * */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateView(welcome: Welcome){
+        // Todo: weather icon changing
         val directionX = if (welcome.lon > 0) "E" else "W"
         val directionY = if (welcome.lat > 0) "N" else "S"
         val coords = "${welcome.lat} $directionY, ${welcome.lon} $directionX"
         binding.tvCoord.text = coords
-        binding.tvCity.text = welcome.timezone
+        binding.tvCity.text = forecastViewModel.forecastCity
 
         val currentDate = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
