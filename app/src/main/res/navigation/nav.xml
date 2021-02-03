@@ -14,10 +14,21 @@
         android:id="@+id/listFragment"
         android:name="com.example.forecastapp.view.ListFragment"
         android:label="@string/weather_list"
-        tools:layout="@layout/fragment_list" />
+        tools:layout="@layout/fragment_list">
+        <action
+            android:id="@+id/action_listFragment_to_listOpenFragment"
+            app:destination="@id/listOpenFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/forecastFragment"
         android:name="com.example.forecastapp.view.ForecastFragment"
         android:label="@string/weather_forecast"
         tools:layout="@layout/fragment_forecast" />
+    <fragment
+        android:id="@+id/listOpenFragment"
+        android:name="com.example.forecastapp.view.ListOpenFragment"
+        android:label="@string/weather_list"
+        tools:layout="@layout/fragment_list_open"
+        />
 </navigation>

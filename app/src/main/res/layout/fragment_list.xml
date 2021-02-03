@@ -1,15 +1,384 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/wall"
     tools:context=".view.ListFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="@string/weather_list" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl1"
+        android:layout_width="381dp"
+        android:layout_height="102dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:background="#3F66B5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvdata"
+            android:layout_width="196dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="8dp"
+            android:text="11.01.2021"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvcoord"
+            android:layout_width="199dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="4dp"
+            android:text="56' 5'' E, 67' 3'' N"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvdata" />
+
+        <TextView
+            android:id="@+id/tvtextcorrect"
+            android:layout_width="132dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="4dp"
+            android:text="Dokładność:"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord" />
+
+        <TextView
+            android:id="@+id/tvcorrect"
+            android:layout_width="67dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/tvtextcorrect"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord" />
+
+        <Button
+            android:id="@+id/buttonentercorrect"
+            android:layout_width="57dp"
+            android:layout_height="71dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="31dp"
+            android:background="@drawable/common_full_open_on_phone"
+            android:scaleType="fitCenter"
+            android:src="@drawable/login"
+            android:tint="@color/accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tvcorrect"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl2"
+        android:layout_width="381dp"
+        android:layout_height="102dp"
+        android:layout_marginTop="4dp"
+        android:background="#3F66B5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl1">
+
+        <TextView
+            android:id="@+id/tvdata2"
+            android:layout_width="196dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="4dp"
+            android:text="12.01.2021"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvcoord2"
+            android:layout_width="199dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="4dp"
+            android:text="56' 5'' E, 67' 3'' N"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvdata2" />
+
+        <TextView
+            android:id="@+id/tvtextcorrect2"
+            android:layout_width="132dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="8dp"
+            android:text="Dokładność:"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord2" />
+
+        <TextView
+            android:id="@+id/tvcorrect2"
+            android:layout_width="67dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/tvtextcorrect2"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord2" />
+
+        <Button
+            android:id="@+id/buttonentercorrect2"
+            android:layout_width="57dp"
+            android:layout_height="71dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="31dp"
+            android:background="@drawable/common_full_open_on_phone"
+            android:scaleType="fitCenter"
+            android:src="@drawable/login"
+            android:tint="@color/accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tvcorrect2"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl3"
+        android:layout_width="381dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:background="#3F66B5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl2">
+
+        <TextView
+            android:id="@+id/tvdata3"
+            android:layout_width="196dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="13.01.2021"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvcoord3"
+            android:layout_width="199dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="36dp"
+            android:text="56' 5'' E, 67' 3'' N"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvtextcorrect3"
+            android:layout_width="132dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="8dp"
+            android:text="Dokładność:"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord3" />
+
+        <TextView
+            android:id="@+id/tvcorrect3"
+            android:layout_width="67dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/tvtextcorrect3"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord3" />
+
+        <Button
+            android:id="@+id/buttonentercorrect3"
+            android:layout_width="57dp"
+            android:layout_height="71dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="31dp"
+            android:background="@drawable/common_full_open_on_phone"
+            android:scaleType="fitCenter"
+            android:src="@drawable/login"
+            android:tint="@color/accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tvcorrect3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl4"
+        android:layout_width="378dp"
+        android:layout_height="94dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:background="#3F66B5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl3">
+
+        <TextView
+            android:id="@+id/tvcoord4"
+            android:layout_width="194dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="28dp"
+            android:text="56' 5'' E, 67' 3'' N"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvdata4" />
+
+        <TextView
+            android:id="@+id/tvtextcorrect4"
+            android:layout_width="132dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="8dp"
+            android:text="Dokładność:"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord4" />
+
+        <TextView
+            android:id="@+id/tvcorrect4"
+            android:layout_width="67dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/tvtextcorrect4"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord4" />
+
+        <Button
+            android:id="@+id/buttonentercorrect4"
+            android:layout_width="57dp"
+            android:layout_height="71dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/common_full_open_on_phone"
+            android:scaleType="fitCenter"
+            android:src="@drawable/login"
+            android:tint="@color/accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.413"
+            app:layout_constraintStart_toEndOf="@+id/tvcorrect4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvdata4"
+            android:layout_width="196dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="5dp"
+            android:text="14.01.2021"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl5"
+        android:layout_width="378dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:background="#3F66B5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl4">
+
+        <TextView
+            android:id="@+id/tvdata5"
+            android:layout_width="196dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="4dp"
+            android:text="15.01.2021"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvcoord5"
+            android:layout_width="199dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="4dp"
+            android:text="56' 5'' E, 67' 3'' N"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvdata5" />
+
+        <TextView
+            android:id="@+id/tvtextcorrect5"
+            android:layout_width="132dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="8dp"
+            android:text="Dokładność:"
+            android:textColor="@color/font"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord5" />
+
+        <TextView
+            android:id="@+id/tvcorrect5"
+            android:layout_width="67dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/font"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/tvtextcorrect5"
+            app:layout_constraintTop_toBottomOf="@+id/tvcoord5" />
+
+        <Button
+            android:id="@+id/buttonentercorrect5"
+            android:layout_width="57dp"
+            android:layout_height="71dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/common_full_open_on_phone"
+            android:scaleType="fitCenter"
+            android:src="@drawable/login"
+            android:tint="@color/accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.391"
+            app:layout_constraintStart_toEndOf="@+id/tvcorrect5"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
