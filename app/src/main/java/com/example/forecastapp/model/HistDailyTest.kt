@@ -4,11 +4,15 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.sql.Date
 
-@Entity(tableName = "tab_historicalweather")
-data class HistoricalDailyModel(
-    @PrimaryKey(autoGenerate = true)
+data class HistDailyTest(
     val id: Int,
     val dt: Int,
+    val forecastDate: Date,
+    val savingDate: Date,
+    val city: String,
+    val lat: Double,
+    val lon: Double,
+    val accuracy: String,
     val sunrise: Int,
     val sunset: Int,
     val temp: Double,

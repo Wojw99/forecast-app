@@ -15,7 +15,6 @@ class HistoricalDailyWeatherViewModel(application: Application):AndroidViewModel
 
     private val historicalrepository: HistoricalDailyWeatherRepository
 
-
     init
     {
         val historicalDao = MyDatabase.getDatabase(

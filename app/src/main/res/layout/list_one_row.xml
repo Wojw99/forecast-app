@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/list_row_back"
+    android:padding="4dp"
+    android:layout_marginBottom="13dp"
+    android:id="@+id/weather_row">
+
+    <LinearLayout
+        android:layout_marginStart="5dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="08.01.2021"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_medium_small"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText"/>
+        <TextView
+            android:id="@+id/tvGeo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="52.1874 N, 23.4632 E"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_medium_small"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/tvAccuracy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Poprawność: 70%"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_medium_small"
+            tools:ignore="HardcodedText"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/buttonOpen"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_weight="1"
+        android:layout_marginEnd="5dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_door"
+        android:scaleType="fitCenter"
+        android:background="@drawable/ic_transparent"
+        android:tint="@color/accent"
+        android:contentDescription="@string/btn_open_desc"/>
+
+</LinearLayout>

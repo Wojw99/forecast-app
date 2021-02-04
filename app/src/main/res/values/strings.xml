@@ -37,6 +37,7 @@
     <string name="field_empty">Pole było puste!</string>
     <string name="cancel">Anuluj</string>
     <string name="ok">Ok</string>
+    <string name="btn_open_desc">Open saved weather button</string>
 
 
 </resources>

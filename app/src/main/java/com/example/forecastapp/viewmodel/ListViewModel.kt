@@ -16,7 +16,6 @@ class ListViewModel:ViewModel() {
     fun getOneCallForecast(lat: Double, lon: Double) {
         viewModelScope.launch {
             val response = forecastRepository.getOneCallForecast(lat, lon)
-
         }
     }
 }

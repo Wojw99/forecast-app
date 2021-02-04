@@ -12,5 +12,6 @@
     <color name="accent">#FEB137</color>
     <color name="main_darker">#1C4463</color>
     <color name="main_dark">#1A5E8B</color>
+    <color name="main_dark_alpha">#B21A5E8B</color>
     <color name="main_light">#2171A7</color>
 </resources>
