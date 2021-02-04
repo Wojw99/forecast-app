@@ -102,6 +102,30 @@ class CurrentFragment : Fragment() {
     }
 
     /**
+     * Updates the weather icon with respect to the icon code
+     * @param iconCode icon code that goes with API data
+     * */
+    private fun updateIcon(iconCode: String){
+        // removes "n" and "d" from code because we have only day icons
+        val newIconCode = iconCode
+            .replace("n","")
+            .replace("d","")
+
+        when(newIconCode){
+            "01" -> binding.imageView.setImageResource(R.drawable.n_clear_sky)
+            "02" -> binding.imageView.setImageResource(R.drawable.n_few_clouds)
+            "03" -> binding.imageView.setImageResource(R.drawable.n_scattered_clouds)
+            "04" -> binding.imageView.setImageResource(R.drawable.n_broken_clouds)
+            "09" -> binding.imageView.setImageResource(R.drawable.n_shower_rain)
+            "10" -> binding.imageView.setImageResource(R.drawable.n_rain)
+            "11" -> binding.imageView.setImageResource(R.drawable.n_thunderstorm)
+            "13" -> binding.imageView.setImageResource(R.drawable.n_snow)
+            "50" -> binding.imageView.setImageResource(R.drawable.n_mist)
+        }
+    }
+
+
+    /**
      * Update view data with current weather for selected day
      * */
     @RequiresApi(Build.VERSION_CODES.O)
@@ -118,6 +142,8 @@ class CurrentFragment : Fragment() {
         binding.tvDay.text = currentDate.format(formatter)
 
         val current = welcome.current
+
+        updateIcon(current.weather[0].icon)
 
         val tempValue = (current.temp - 273.15).roundToInt()
         val temp = "${tempValue}°C"

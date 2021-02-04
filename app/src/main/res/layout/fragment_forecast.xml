@@ -103,9 +103,9 @@
 
             <TextView
                 android:id="@+id/tvTemp"
-                android:layout_width="120dp"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:text="95°C"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/font"
                 android:textSize="55sp" />
@@ -114,7 +114,7 @@
                 android:id="@+id/tvTempDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dzień"
+                android:text=""
                 android:textAlignment="center"
                 android:textColor="@color/font"
                 android:textSize="@dimen/text_small" />
@@ -145,13 +145,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:contentDescription="@string/weather_icon"
-        android:minWidth="75dp"
-        android:minHeight="75dp"
         android:padding="10dp"
-        android:src="@drawable/sun"
+        android:src="@drawable/ic_transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvBorder" />
@@ -161,7 +159,6 @@
         android:id="@+id/linearLayoutRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -258,7 +255,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/linearLayoutRight"
         app:layout_constraintStart_toStartOf="parent"

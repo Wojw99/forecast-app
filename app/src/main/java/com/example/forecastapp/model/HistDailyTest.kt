@@ -7,12 +7,14 @@ import java.sql.Date
 data class HistDailyTest(
     val id: Int,
     val dt: Int,
+
     val forecastDate: Date,
     val savingDate: Date,
     val city: String,
     val lat: Double,
     val lon: Double,
     val accuracy: String,
+
     val sunrise: Int,
     val sunset: Int,
     val temp: Double,
