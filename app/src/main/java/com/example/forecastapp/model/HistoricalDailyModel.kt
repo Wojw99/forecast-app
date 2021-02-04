@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.sql.Date
 
-@Entity(tableName = "tab_historicalweather")
+@Entity(tableName = "tab_historicalweather") //druga tabela do workmanager
 data class HistoricalDailyModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
@@ -22,4 +22,11 @@ data class HistoricalDailyModel(
     val clouds: Double,
     val pop: Double,
     val uvi: Double
+
+  // val forecastDate: Date,
+   // val savingDate: Date,
+   // val city: String,
+   // val lat: Double,
+   // val lon: Double,
+   // val accuracy: String
 )

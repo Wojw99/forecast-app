@@ -5,7 +5,7 @@ import com.example.forecastapp.model.HistoricalDailyModel
 
 @Dao
 interface HistoricalDailyDao
-{
+{ //realweatherdailydao
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun add(historicalDailyModel: HistoricalDailyModel)
 

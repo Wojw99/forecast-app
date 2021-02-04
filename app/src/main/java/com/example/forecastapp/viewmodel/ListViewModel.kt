@@ -13,6 +13,8 @@ class ListViewModel:ViewModel() {
     val forecastBody: LiveData<Welcome> = MutableLiveData()
     private val forecastRepository = ForecastRepository()
 
+    //private var historyweather = HistoricalDailyWeatherViewModel()
+
     fun getOneCallForecast(lat: Double, lon: Double) {
         viewModelScope.launch {
             val response = forecastRepository.getOneCallForecast(lat, lon)
