@@ -11,7 +11,8 @@ import com.example.forecastapp.model.repository.HistDailyRepository
 
 class HistDailyViewModel(application: Application): AndroidViewModel(application)
 {
-    val readAll: LiveData<List<HistDaily>>
+    var readAll: LiveData<List<HistDaily>>
+    //var readOne: LiveData<List<HistDaily>>
     private val repository: HistDailyRepository
 
     init
@@ -19,6 +20,7 @@ class HistDailyViewModel(application: Application): AndroidViewModel(application
         val historicalDao = MyDatabase.getDatabase(application).historicalDailyDao()
         repository = HistDailyRepository(historicalDao)
         readAll = repository.showall
+        //readAll = repository.allweathers
     }
 
     fun addhistoricalweather(hdmodel: HistDaily)
@@ -28,10 +30,32 @@ class HistDailyViewModel(application: Application): AndroidViewModel(application
         }
     }
 
+    fun edithistoricalweather(hdmodel: HistDaily)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.update(hdmodel)
+        }
+    }
+
     fun deletehistoricalweather(hdmodel: HistDaily)
     {
         viewModelScope.launch(Dispatchers.IO) {
             repository.delete(hdmodel)
         }
     }
+
+    fun deletallweathers()
+    { viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteall()
+        }
+    }
+
+    fun weatherbyid(idweather: Int) {
+
+        readAll = repository.selectbyid(idweather)
+
+    }
+
+
+
 }
