@@ -1,4 +1,4 @@
-package com.example.forecastapp.model.Dao;
+package com.example.forecastapp.model.data;
 
 import android.database.Cursor;
 import androidx.lifecycle.LiveData;

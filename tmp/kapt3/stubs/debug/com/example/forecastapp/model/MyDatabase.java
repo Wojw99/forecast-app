@@ -9,7 +9,7 @@ public abstract class MyDatabase extends androidx.room.RoomDatabase {
     public static final com.example.forecastapp.model.MyDatabase.Companion Companion = null;
     
     @org.jetbrains.annotations.NotNull()
-    public abstract com.example.forecastapp.model.Dao.HistoricalDailyDao historicalDailyDao();
+    public abstract com.example.forecastapp.model.data.HistoricalDailyDao historicalDailyDao();
     
     public MyDatabase() {
         super();

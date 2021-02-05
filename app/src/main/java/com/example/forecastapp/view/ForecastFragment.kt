@@ -1,7 +1,6 @@
 package com.example.forecastapp.view
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
@@ -18,12 +17,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.forecastapp.R
 import com.example.forecastapp.databinding.FragmentForecastBinding
+import com.example.forecastapp.model.HistDaily
 import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.viewmodel.ForecastViewModel
-import kotlinx.coroutines.channels.consumesAll
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
@@ -63,18 +62,6 @@ class ForecastFragment : Fragment() {
         return view
     }
 
-//    private fun showCustomToast(message: String, viewGroup: ViewGroup, duration: Int){
-//        val layout = layoutInflater.inflate(R.layout.toast_layout, viewGroup)
-//        layout.findViewById<TextView>(R.id.tvContent).text = message
-//
-//        val toast = Toast(activity)
-//        toast.setGravity(Gravity.CENTER, 0, 0)
-//        toast.duration = duration
-//        toast.view = layout
-//
-//        toast.show()
-//    }
-
     /**
      * Gets a forecast parent class (welcome) from view model
      * */
@@ -94,10 +81,27 @@ class ForecastFragment : Fragment() {
     }
 
     /**
-     * Setup saving current showed forecast to the database
+     * Set up saving current showed forecast to the database
      * */
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupFloatingButton(){
         binding.fabSaving.setOnClickListener {
+            showToastCenter(getString(R.string.forecast_added))
+            if(forecastViewModel.forecastBody.value != null){
+                val welcome = forecastViewModel.forecastBody.value!!
+                val daily = welcome.daily[dayIndex]
+
+                val city = if (forecastViewModel.forecastCity.isEmpty()) welcome.timezone else forecastViewModel.forecastCity
+                val forecastDay = LocalDate.now().plusDays((dayIndex + 1).toLong())
+                val todayDay = LocalDate.now()
+
+                val histDaily = HistDaily( 0, daily.dt, forecastDay, todayDay,
+                        city, welcome.lat, welcome.lon, "?", daily.sunrise, daily.sunset,
+                        getTemperature(), getFeelsLike(), daily.pressure, daily.humidity,
+                        daily.dewPoint, daily.windSpeed, daily.windDeg, daily.weather[0].description,
+                        daily.clouds, daily.pop, daily.uvi)
+                forecastViewModel.addToHistory(histDaily)
+            }
             lifecycleScope.launch {
                 AnimationHelper.clickAnimate(view = binding.fabSaving, scaleMin = 0.8f)
             }
@@ -105,7 +109,16 @@ class ForecastFragment : Fragment() {
     }
 
     /**
-     * Setup changing a forecast city by the user
+     * Shows toast message in the center of the screen
+     * */
+    private fun showToastCenter(text: String){
+        Toast.makeText(requireContext(),text,Toast.LENGTH_SHORT)
+                .apply { setGravity(Gravity.CENTER,0,0) }
+                .show()
+    }
+
+    /**
+     * Set up changing a forecast city by the user
      * */
     private fun setupChangeButton(){
         binding.tvCity.setOnClickListener {
@@ -127,9 +140,7 @@ class ForecastFragment : Fragment() {
                 }
                 else{
                     dialogInterface.cancel()
-                    Toast.makeText(requireContext(),getText(R.string.field_empty),Toast.LENGTH_SHORT)
-                            .apply { setGravity(Gravity.CENTER,0,0) }
-                            .show()
+                    showToastCenter(getString(R.string.field_empty))
                 }
             }
             dialog.setNegativeButton(getText(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
@@ -141,7 +152,7 @@ class ForecastFragment : Fragment() {
     }
 
     /**
-     * Setup left and right arrow buttons
+     * Set up left and right arrow buttons
      * */
     private fun setupNextButtons(){
         binding.buttonLeft.setOnClickListener {
@@ -158,6 +169,38 @@ class ForecastFragment : Fragment() {
             temperatureIndex += 1
             updateTemperature()
         }
+    }
+
+    /**
+     * Returns the temperature value currently set by the user
+     * */
+    private fun getTemperature() : Double{
+        val temp = forecastViewModel.forecastBody.value!!.daily[dayIndex].temp
+
+        when(temperatureIndex) {
+            0 -> return temp.morn
+            1 -> return temp.day
+            2 -> return temp.eve
+            3 -> return temp.night
+        }
+
+        return temp.day
+    }
+
+    /**
+     * Returns the feels like value in reference to temperature currently set by the user
+     * */
+    private fun getFeelsLike() : Double{
+        val temp = forecastViewModel.forecastBody.value!!.daily[dayIndex].feelsLike
+
+        when(temperatureIndex) {
+            0 -> return temp.morn
+            1 -> return temp.day
+            2 -> return temp.eve
+            3 -> return temp.night
+        }
+
+        return temp.day
     }
 
     /**
@@ -204,7 +247,7 @@ class ForecastFragment : Fragment() {
     }
 
     /**
-     * Setup spinner control with adapter and list of next seven days
+     * Set up spinner control with adapter and list of next seven days
      * */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupAdapter(){
@@ -233,7 +276,8 @@ class ForecastFragment : Fragment() {
         var currentDay = LocalDateTime.now().plusDays(2)
         for(i in 1..5){
             currentDay = currentDay.plusDays(1)
-            val newDay = "${currentDay.dayOfMonth}.${currentDay.month.value}"
+            val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+            val newDay = currentDay.format(formatter)
             list.add(newDay)
         }
 

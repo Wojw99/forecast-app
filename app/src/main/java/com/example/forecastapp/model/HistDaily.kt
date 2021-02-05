@@ -2,14 +2,17 @@
 package com.example.forecastapp.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.sql.Date
+import java.time.LocalDate
+import java.util.Date
 
-data class HistDailyTest(
+@Entity(tableName = "tab_historicalweather")
+data class HistDaily(
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
     val dt: Int,
 
-    val forecastDate: Date,
-    val savingDate: Date,
+    val forecastDate: LocalDate,
+    val savingDate: LocalDate,
     val city: String,
     val lat: Double,
     val lon: Double,

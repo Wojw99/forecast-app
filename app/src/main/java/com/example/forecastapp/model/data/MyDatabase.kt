@@ -1,12 +1,13 @@
-package com.example.forecastapp.model
+package com.example.forecastapp.model.data
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.forecastapp.model.Dao.HistoricalDailyDao
+import com.example.forecastapp.model.HistDaily
 
-@Database(entities = [HistoricalDailyModel::class ], version = 4, exportSchema = false)
+@Database(entities = [HistDaily::class ], version = 7, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class MyDatabase:RoomDatabase()
 {
     abstract fun historicalDailyDao(): HistoricalDailyDao
@@ -15,7 +16,7 @@ abstract class MyDatabase:RoomDatabase()
         @Volatile
         private var INSTANCE: MyDatabase? = null
 
-        fun getDatabase(context: Context): MyDatabase{
+        fun getDatabase(context: Context): MyDatabase {
             val tempInstance = INSTANCE
 
             if(tempInstance != null){

@@ -1,20 +1,38 @@
 package com.example.forecastapp.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.forecastapp.model.HistDaily
+import com.example.forecastapp.model.data.MyDatabase
 import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.model.repository.ForecastRepository
+import com.example.forecastapp.model.repository.HistDailyRepository
+import com.example.forecastapp.model.welcome.Daily
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ForecastViewModel : ViewModel() {
+class ForecastViewModel(application: Application) : AndroidViewModel(application) {
     val forecastBody: MutableLiveData<Welcome> = MutableLiveData()
     var forecastCity: String = ""
     private val forecastRepository = ForecastRepository()
+    private val histDailyRepository = HistDailyRepository(MyDatabase.getDatabase(application).historicalDailyDao())
+
+    /**
+     * Saves daily object by adding it to the history database.
+     * */
+    fun addToHistory(histDaily: HistDaily)
+    {
+        viewModelScope.launch(Dispatchers.IO) {
+            histDailyRepository.add(histDaily)
+        }
+    }
 
     /**
      * Firstly, calls API for a geocoding object (cityName as argument) and gets coords from it.

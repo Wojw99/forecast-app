@@ -6,7 +6,7 @@ import java.lang.System;
 public final class HistoricalDailyWeatherRepository {
     @org.jetbrains.annotations.NotNull()
     private final androidx.lifecycle.LiveData<java.util.List<com.example.forecastapp.model.HistoricalDailyModel>> showall = null;
-    private com.example.forecastapp.model.Dao.HistoricalDailyDao historicalDailyDao;
+    private com.example.forecastapp.model.data.HistoricalDailyDao historicalDailyDao;
     
     @org.jetbrains.annotations.NotNull()
     public final androidx.lifecycle.LiveData<java.util.List<com.example.forecastapp.model.HistoricalDailyModel>> getShowall() {
@@ -28,7 +28,7 @@ public final class HistoricalDailyWeatherRepository {
     }
     
     public HistoricalDailyWeatherRepository(@org.jetbrains.annotations.NotNull()
-    com.example.forecastapp.model.Dao.HistoricalDailyDao historicalDailyDao) {
+    com.example.forecastapp.model.data.HistoricalDailyDao historicalDailyDao) {
         super();
     }
 }

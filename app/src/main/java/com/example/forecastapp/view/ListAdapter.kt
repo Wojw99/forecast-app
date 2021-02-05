@@ -1,19 +1,21 @@
 package com.example.forecastapp.view
 
+import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.navigation.findNavController
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.forecastapp.R
-import com.example.forecastapp.model.HistDailyTest
-import com.example.forecastapp.model.HistoricalDailyModel
+import com.example.forecastapp.model.HistDaily
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
-    private var forecastList = emptyList<HistDailyTest>()
+    private var forecastList = emptyList<HistDaily>()
 
     class Holder(view: View): RecyclerView.ViewHolder(view)
 
@@ -26,6 +28,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
         return forecastList.size
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val currentItem = forecastList[position]
         val tvDate = holder.itemView.findViewById<TextView>(R.id.tvDate)
@@ -34,10 +37,9 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
         val btnOpen = holder.itemView.findViewById<ImageButton>(R.id.buttonOpen)
 
         // Date
-        val calendar = GregorianCalendar()
-        calendar.time = currentItem.forecastDate
-        val dateStr = "${calendar.get(Calendar.DAY_OF_MONTH)}.${calendar.get(Calendar.MONTH + 1)}.${calendar.get(Calendar.YEAR)}"
-        tvDate.text = dateStr
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        val formattedDate = currentItem.forecastDate.format(formatter)
+        tvDate.text = formattedDate
 
         // Coordinates
         if(currentItem.city.isEmpty()){
@@ -59,7 +61,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
         }
     }
 
-    fun setData(list: List<HistDailyTest>){
+    fun setData(list: List<HistDaily>){
         this.forecastList = list
         notifyDataSetChanged()
     }
