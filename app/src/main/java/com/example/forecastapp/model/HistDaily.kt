@@ -30,5 +30,7 @@ data class HistDaily(
     val weather: String,
     val clouds: Double,
     val pop: Double,
-    val uvi: Double
+    val uvi: Double,
+
+    val checked: Boolean
 )

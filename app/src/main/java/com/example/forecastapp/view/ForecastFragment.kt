@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,8 +16,12 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.example.forecastapp.R
 import com.example.forecastapp.databinding.FragmentForecastBinding
+import com.example.forecastapp.model.CompareForecast
 import com.example.forecastapp.model.HistDaily
 import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.viewmodel.ForecastViewModel
@@ -25,6 +30,7 @@ import java.io.IOException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 class ForecastFragment : Fragment() {
@@ -86,8 +92,8 @@ class ForecastFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupFloatingButton(){
         binding.fabSaving.setOnClickListener {
-            showToastCenter(getString(R.string.forecast_added))
             if(forecastViewModel.forecastBody.value != null){
+
                 val welcome = forecastViewModel.forecastBody.value!!
                 val daily = welcome.daily[dayIndex]
 
@@ -99,13 +105,47 @@ class ForecastFragment : Fragment() {
                         city, welcome.lat, welcome.lon, "?", daily.sunrise, daily.sunset,
                         getTemperature(), getFeelsLike(), daily.pressure, daily.humidity,
                         daily.dewPoint, daily.windSpeed, daily.windDeg, daily.weather[0].description,
-                        daily.clouds, daily.pop, daily.uvi)
+                        daily.clouds, daily.pop, daily.uvi, false)
                 forecastViewModel.addToHistory(histDaily)
+
+                Log.d("Compare (interval):", getHoursInterval().toString())
+
+                compareForecastRequest(histDaily.dt, histDaily.temp)
+                showToastCenter(getString(R.string.forecast_added))
             }
             lifecycleScope.launch {
                 AnimationHelper.clickAnimate(view = binding.fabSaving, scaleMin = 0.8f)
             }
         }
+    }
+
+    /**
+     * Counts interval between today and forecast day. Returns interval in hours.
+     * */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getHoursInterval() : Long{
+        val forecastDay = LocalDate.now().plusDays((dayIndex + 1).toLong())
+        val todayDay = LocalDate.now()
+        var plusHours = 0
+
+        when(temperatureIndex) {
+            0 -> plusHours = 6
+            1 -> plusHours = 12
+            2 -> plusHours = 18
+            3 -> plusHours = 0
+        }
+
+        val interval = forecastDay.toEpochDay() - todayDay.toEpochDay()
+        return (interval * 24) - LocalDateTime.now().hour + plusHours
+    }
+
+    private fun compareForecastRequest(dt: Int, temp: Double){
+        val compareForecastRequest: WorkRequest = OneTimeWorkRequestBuilder<CompareForecast>()
+                .setInitialDelay(1, TimeUnit.MINUTES)
+                .addTag(dt.toString())
+                .addTag(temp.toString())
+                .build()
+        WorkManager.getInstance(requireContext()).enqueue(compareForecastRequest)
     }
 
     /**
