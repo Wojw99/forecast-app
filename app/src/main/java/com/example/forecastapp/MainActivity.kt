@@ -6,7 +6,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
+import com.example.forecastapp.model.CompareForecast
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +20,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setupBottomNavigation()
+
+//        val compareForecastRequest2: WorkRequest = OneTimeWorkRequestBuilder<CompareForecast>()
+//            .setInitialDelay(1,TimeUnit.MINUTES)
+//            .build()
+//        val compareForecastRequest =
+//            PeriodicWorkRequestBuilder<CompareForecast>(15,TimeUnit.MINUTES).build()
+//        WorkManager.getInstance(this).enqueue(compareForecastRequest2)
     }
 
     /**
