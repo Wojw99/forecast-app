@@ -35,6 +35,14 @@ class ForecastViewModel(application: Application) : AndroidViewModel(application
     }
 
     /**
+     * Selects max id.
+     * */
+    suspend fun getMaxId() : Int
+    {
+        return histDailyRepository.selectMaxId()
+    }
+
+    /**
      * Firstly, calls API for a geocoding object (cityName as argument) and gets coords from it.
      * Next, calls API for a 7-day forecast (lat and lon as arguments) and changes forecastBody
      * */

@@ -2,6 +2,7 @@ package com.example.forecastapp.model.data
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.forecastapp.model.HistDaily
+import retrofit2.Call
 
 @Dao
 interface HistoricalDailyDao
@@ -22,8 +23,11 @@ interface HistoricalDailyDao
     fun historicaldailyall(): LiveData<List<HistDaily>>
 
     @Query("SELECT * FROM tab_historicalweather WHERE id=:id ")
-    fun selectbyid(id: Int): LiveData<List<HistDaily>>
+    suspend fun selectbyid(id: Int): HistDaily
 
-   // @Query("SELECT * FROM tab_historicalweather")
-   // fun getallweathers(): LiveData<List<HistDaily>>
+    @Query("SELECT * FROM tab_historicalweather WHERE dt=:dt ")
+    suspend fun selectbydt(dt: Int): HistDaily
+
+    @Query("SELECT MAX(id) FROM tab_historicalweather")
+    suspend fun selectMaxID(): Int
 }

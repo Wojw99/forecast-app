@@ -16,7 +16,7 @@ data class HistDaily(
     val city: String,
     val lat: Double,
     val lon: Double,
-    val accuracy: String,
+    var accuracy: String,
 
     val sunrise: Int,
     val sunset: Int,
