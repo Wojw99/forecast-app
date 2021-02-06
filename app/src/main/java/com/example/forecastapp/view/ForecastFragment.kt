@@ -25,6 +25,8 @@ import com.example.forecastapp.model.CompareForecast
 import com.example.forecastapp.model.HistDaily
 import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.viewmodel.ForecastViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.time.LocalDate
@@ -108,9 +110,14 @@ class ForecastFragment : Fragment() {
                         daily.clouds, daily.pop, daily.uvi, false)
                 forecastViewModel.addToHistory(histDaily)
 
+                GlobalScope.launch {
+                    delay(500)
+                    val id = forecastViewModel.getMaxId()
+                    Log.d("Compare (id):", id.toString())
+                    compareForecastRequest(id)
+                }
                 Log.d("Compare (interval):", getHoursInterval().toString())
 
-                compareForecastRequest(histDaily.dt, histDaily.temp)
                 showToastCenter(getString(R.string.forecast_added))
             }
             lifecycleScope.launch {
@@ -139,11 +146,11 @@ class ForecastFragment : Fragment() {
         return (interval * 24) - LocalDateTime.now().hour + plusHours
     }
 
-    private fun compareForecastRequest(dt: Int, temp: Double){
+    private fun compareForecastRequest(id: Int){
+        val interval = getHoursInterval()
         val compareForecastRequest: WorkRequest = OneTimeWorkRequestBuilder<CompareForecast>()
-                .setInitialDelay(1, TimeUnit.MINUTES)
-                .addTag(dt.toString())
-                .addTag(temp.toString())
+                .setInitialDelay(getHoursInterval(), TimeUnit.SECONDS)
+                .addTag(id.toString())
                 .build()
         WorkManager.getInstance(requireContext()).enqueue(compareForecastRequest)
     }

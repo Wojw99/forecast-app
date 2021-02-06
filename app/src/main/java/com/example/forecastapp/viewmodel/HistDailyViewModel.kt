@@ -49,13 +49,4 @@ class HistDailyViewModel(application: Application): AndroidViewModel(application
         repository.deleteall()
         }
     }
-
-    fun weatherbyid(idweather: Int) {
-
-        readAll = repository.selectbyid(idweather)
-
-    }
-
-
-
 }
