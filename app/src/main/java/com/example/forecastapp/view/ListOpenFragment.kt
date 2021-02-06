@@ -17,13 +17,7 @@ import kotlin.math.roundToInt
 
 class ListOpenFragment : Fragment() {
 
-    //private var historicalDailyWeatherModel1 = "pogoda1"
-   // private var historicalDailyWeatherModel2 = "pogoda2"
-
-    //private var hdweathermodel:
-
     private var _binding: FragmentListOpenBinding? = null
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -34,18 +28,6 @@ class ListOpenFragment : Fragment() {
 
         _binding = FragmentListOpenBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        //return inflater.inflate(R.layout.fragment_list_open, container, false)
-        //val directionX = if (elementlista.lon > 0) "E" else "W"
-        //val directionY = if (elementlista.lat > 0) "N" else "S"
-        //val coords = "${elementlista.lat} $directionY, ${elementlista.lon} $directionX"
-       // val tempValue = (elementlista.temp - 273.15).roundToInt()
-       // val temp = "${tempValue}°C"
-        //binding.tvcoordopen.text=coords
-
-
-        //probabilty parameters
-
 
         var temp = 70.0
         var tempprob = "${temp}°C"
@@ -118,11 +100,6 @@ class ListOpenFragment : Fragment() {
         var cloudnessdiff = binding.tvcloudnessdif.text
         var uvdiff = binding.tvUVdif.text
 
-
-
-       // if(temp > temperature)
-       // {
-
         var x = tempreal-temp
 
         if(tempreal> temp)
@@ -140,34 +117,6 @@ class ListOpenFragment : Fragment() {
             var tempdiff = "0"
             binding.tvtempdif.text = tempdiff
         }
-
-
-
-
-
-
-
-       // }
-//        else if (temperature < temp)
-//        {
-//            var x = temp.toDouble()-temperature.toDouble()
-//            var tempdiff = "+${x}"
-//            binding.tvtempdif.text = tempdiff
-//        }
-//        else(temperature==temp)
-//        {
-//
-//            var tempdiff = 0
-//            binding.tvtempdif.text = tempdiff.toString()
-//        }
-
-
-
-
       return view
-
     }
-
-
-
 }
