@@ -12,8 +12,6 @@ class ListOpenFragment : Fragment() {
     private var historicalDailyWeatherModel1 = "pogoda1"
     private var historicalDailyWeatherModel2 = "pogoda2"
 
-
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?

@@ -4,13 +4,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.forecastapp.model.CheckedHistDaily
 import com.example.forecastapp.model.HistDaily
 
-@Database(entities = [HistDaily::class ], version = 9, exportSchema = false)
+@Database(entities = [HistDaily::class, CheckedHistDaily::class], version = 10, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MyDatabase:RoomDatabase()
 {
     abstract fun historicalDailyDao(): HistoricalDailyDao
+    abstract fun checkedHistDailyDao(): CheckedHistDailyDao
 
     companion object {
         @Volatile

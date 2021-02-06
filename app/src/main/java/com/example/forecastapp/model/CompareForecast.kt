@@ -2,23 +2,22 @@ package com.example.forecastapp.model
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.forecastapp.model.data.MyDatabase
+import com.example.forecastapp.model.repository.CheckedDailyRepository
 import com.example.forecastapp.model.repository.ForecastRepository
 import com.example.forecastapp.model.repository.HistDailyRepository
 import com.example.forecastapp.model.welcome.Welcome
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Response
 
 class CompareForecast(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
 
     private val histDailyRepository = HistDailyRepository(MyDatabase.getDatabase(appContext).historicalDailyDao())
+    private val checkedDailyRepository = CheckedDailyRepository(MyDatabase.getDatabase(appContext).checkedHistDailyDao())
     private val forecastRepository = ForecastRepository()
 
     override fun doWork(): Result {
@@ -31,18 +30,41 @@ class CompareForecast(appContext: Context, workerParams: WorkerParameters) :
 
                     delay(1000)
 
-                    val checkedHistDaily = forecastRepository.getOneCallForecast(histDaily.lat, histDaily.lon)
-                    Log.d("Compare", checkedHistDaily.body().toString())
+                    val welcome = forecastRepository.getOneCallForecast(histDaily.lat, histDaily.lon)
+                    Log.d("Compare", welcome.body().toString())
 
-                    if(checkedHistDaily.body() != null){
-                        val accuracy = countAccuracy(histDaily, checkedHistDaily.body()!!)
+                    if(welcome.body() != null){
+                        val accuracy = countAccuracy(histDaily, welcome.body()!!)
                         histDaily.accuracy = accuracy.toString()
                         histDailyRepository.update(histDaily)
+                        addToCheckedDaily(welcome.body()!!, histDaily)
                     }
                 }
             }
         }
         return Result.success()
+    }
+
+    private suspend fun addToCheckedDaily(welcome: Welcome, histDaily: HistDaily){
+        val current = welcome.current
+        val checkedHistDaily = CheckedHistDaily(
+                id = histDaily.id,
+                dt = current.dt,
+                sunrise = current.sunrise,
+                sunset = current.sunset,
+                temp = current.temp,
+                feels_like = current.feelsLike,
+                pressure = current.pressure,
+                humidity = current.humidity,
+                dew_point = current.dewPoint,
+                wind_deg = current.windDeg,
+                wind_speed = current.windSpeed,
+                weather = current.weather[0].description,
+                clouds = current.clouds,
+                uvi = current.uvi,
+                checked = true
+        )
+        checkedDailyRepository.add(checkedHistDaily)
     }
 
     private fun countAccuracy(daily1: HistDaily, daily2: Welcome): Double{

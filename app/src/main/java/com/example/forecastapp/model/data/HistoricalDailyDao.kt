@@ -1,8 +1,8 @@
 package com.example.forecastapp.model.data
+
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.forecastapp.model.HistDaily
-import retrofit2.Call
 
 @Dao
 interface HistoricalDailyDao

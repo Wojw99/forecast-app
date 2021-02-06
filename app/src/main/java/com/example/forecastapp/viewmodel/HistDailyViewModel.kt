@@ -49,4 +49,9 @@ class HistDailyViewModel(application: Application): AndroidViewModel(application
         repository.deleteall()
         }
     }
+
+    companion object{
+        // ID of the current showed HistDaily and CheckedDaily
+        var currentId = 0
+    }
 }

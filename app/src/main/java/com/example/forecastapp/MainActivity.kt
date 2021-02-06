@@ -20,13 +20,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setupBottomNavigation()
-
-//        val compareForecastRequest2: WorkRequest = OneTimeWorkRequestBuilder<CompareForecast>()
-//            .setInitialDelay(1,TimeUnit.MINUTES)
-//            .build()
-//        val compareForecastRequest =
-//            PeriodicWorkRequestBuilder<CompareForecast>(15,TimeUnit.MINUTES).build()
-//        WorkManager.getInstance(this).enqueue(compareForecastRequest2)
     }
 
     /**

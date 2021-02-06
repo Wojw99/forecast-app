@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.forecastapp.R
 import com.example.forecastapp.model.HistDaily
+import com.example.forecastapp.viewmodel.HistDailyViewModel
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -57,7 +59,8 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
 
         // Button open
         btnOpen.setOnClickListener {
-
+            HistDailyViewModel.currentId = currentItem.id
+            holder.itemView.findNavController().navigate(R.id.action_listFragment_to_listOpenFragment)
         }
     }
 

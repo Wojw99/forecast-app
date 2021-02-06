@@ -13,14 +13,15 @@ class HistDailyRepository(private var historicalDailyDao: HistoricalDailyDao) {
         historicalDailyDao.add(hweatherdaily)
     }
 
-    suspend fun update(hweatherdaily: HistDaily){ historicalDailyDao.update(hweatherdaily) }
+    suspend fun update(hweatherdaily: HistDaily)
+    {
+        historicalDailyDao.update(hweatherdaily)
+    }
 
     suspend fun delete(hweatherdaily: HistDaily)
     {
         historicalDailyDao.delete(hweatherdaily)
     }
-
-    //val allweathers: LiveData<List<HistDaily>> = historicalDailyDao.getallweathers()
 
     suspend fun deleteall()
     {
@@ -30,11 +31,6 @@ class HistDailyRepository(private var historicalDailyDao: HistoricalDailyDao) {
     suspend fun selectbyid(weatherid: Int): HistDaily
     {
         return historicalDailyDao.selectbyid(weatherid)
-    }
-
-    suspend fun selectbydt(weatherdt: Int): HistDaily
-    {
-        return historicalDailyDao.selectbydt(weatherdt)
     }
 
     suspend fun selectMaxId(): Int{
