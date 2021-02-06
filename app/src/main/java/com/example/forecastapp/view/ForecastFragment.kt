@@ -108,6 +108,7 @@ class ForecastFragment : Fragment() {
                         getTemperature(), getFeelsLike(), daily.pressure, daily.humidity,
                         daily.dewPoint, daily.windSpeed, daily.windDeg, daily.weather[0].description,
                         daily.clouds, daily.pop, daily.uvi, false)
+
                 forecastViewModel.addToHistory(histDaily)
 
                 GlobalScope.launch {

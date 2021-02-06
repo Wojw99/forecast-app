@@ -17,12 +17,12 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
-    private var forecastList = emptyList<HistDaily>()
+    public var forecastList = emptyList<HistDaily>()
 
     class Holder(view: View): RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_one_row, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_one_row, parent, false)
         return Holder(view)
     }
 
