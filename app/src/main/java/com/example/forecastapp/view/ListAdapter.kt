@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.forecastapp.R
 import com.example.forecastapp.model.HistDaily
@@ -15,12 +16,12 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
-    private var forecastList = emptyList<HistDaily>()
+    public var forecastList = emptyList<HistDaily>()
 
     class Holder(view: View): RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_one_row, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.list_one_row, parent, false)
         return Holder(view)
     }
 
@@ -57,6 +58,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
 
         // Button open
         btnOpen.setOnClickListener {
+            holder.itemView.findNavController().navigate(R.id.action_listFragment_to_listOpenFragment)
 
         }
     }
