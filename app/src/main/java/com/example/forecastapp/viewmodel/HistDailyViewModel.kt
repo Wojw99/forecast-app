@@ -14,6 +14,7 @@ import com.example.forecastapp.model.repository.HistDailyRepository
 
 class HistDailyViewModel(application: Application): AndroidViewModel(application)
 {
+    var readAll: LiveData<List<HistDaily>>
     var histDaily: MutableLiveData<HistDaily> = MutableLiveData()
     var checkedHistDaily: MutableLiveData<CheckedHistDaily> = MutableLiveData()
 
@@ -26,6 +27,7 @@ class HistDailyViewModel(application: Application): AndroidViewModel(application
         val checkedDao = MyDatabase.getDatabase(application).checkedHistDailyDao()
         histRepository = HistDailyRepository(historicalDao)
         checkRepository = CheckedDailyRepository(checkedDao)
+        readAll = histRepository.showall
     }
 
     fun readHistDailyById(id: Int){
