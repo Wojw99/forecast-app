@@ -3,4 +3,8 @@
     <dimen name="text_medium">21sp</dimen>
     <dimen name="text_medium_small">17sp</dimen>
     <dimen name="text_small">16sp</dimen>
+    <dimen name="list_open_space">0dp</dimen>
+    <!--68 textview difference -->
+
+
 </resources>
