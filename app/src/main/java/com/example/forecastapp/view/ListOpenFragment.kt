@@ -31,12 +31,10 @@ import kotlin.math.roundToInt
 
 
 class ListOpenFragment : Fragment() {
-    private lateinit var histDailyViewModel : HistDailyViewModel
-
     private var _binding: FragmentListOpenBinding? = null
     private val binding get() = _binding!!
 
-  private  lateinit var histDailyViewModel: HistDailyViewModel
+    private  lateinit var histDailyViewModel: HistDailyViewModel
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -51,17 +49,12 @@ class ListOpenFragment : Fragment() {
         histDailyViewModel = ViewModelProvider(requireActivity()).get(HistDailyViewModel::class.java)
         setup()
 
-
-
-
-
       return view
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateHistDailyView(histDaily: HistDaily){
-        // Tu musi zostać rozpisane aktulizowanie się widoku pogody prognozowanej
-        Log.d("Update", "id: ${histDaily.id}, city: ${histDaily.city}, temp: ${histDaily.temp}, accuracy: ${histDaily.accuracy}, hum:${histDaily.humidity}")
+    private fun updateHistDailyView(histDaily: HistDaily?){
+        if(histDaily == null) return
 
         var city = histDaily.city
         binding.tvCityopen.text = city
@@ -77,11 +70,16 @@ class ListOpenFragment : Fragment() {
         binding.tvdataopen.text=formattedDate
 
 
-        var accuracy = histDaily.accuracy.toDouble()*100
-        var ac = "${accuracy}%"
-        binding.tvcorrectopen.text = ac
+        if(histDaily.accuracy != "?"){
+            var accuracy = histDaily.accuracy.toDouble()*100
+            var ac = "${accuracy}%"
+            binding.tvcorrectopen.text = ac
+        }
+        else{
+            binding.tvcorrectopen.text = "?"
+        }
 
-         var temp = (histDaily.temp -273.15).roundToInt()
+        var temp = (histDaily.temp -273.15).roundToInt()
         var tempprob = "${temp}°C"
         binding.tvtempprob.text=tempprob
 
@@ -109,14 +107,10 @@ class ListOpenFragment : Fragment() {
         var UV = histDaily.uvi
         var uvprob = "${UV}"
         binding.tvUVprob.text = uvprob
-
     }
 
-
-
-    private fun updateCheckedHistDailyView(checkedHistDaily: CheckedHistDaily){
-        // Tu musi zostać rozpisane aktulizowanie się widoku pogody rzeczywistej
-        Log.d("Update", "id: ${checkedHistDaily.id}, temp: ${checkedHistDaily.temp}, hum:${checkedHistDaily.humidity}")
+    private fun updateCheckedHistDailyView(checkedHistDaily: CheckedHistDaily?){
+        if(checkedHistDaily == null) return
 
         var tempreal = (checkedHistDaily.temp - 273.15).roundToInt()
         var tempreal2 = "${tempreal}°C"
@@ -145,13 +139,6 @@ class ListOpenFragment : Fragment() {
         var uv = checkedHistDaily.uvi
         var uvreal = "${uv}"
         binding.tvUVrel.text = uvreal
-
-    private fun updateHistDailyView(histDaily: HistDaily){
-        // Tu musi zostać rozpisane aktulizowanie się widoku pogody prognozowanej
-        Log.d("Update", "id: ${histDaily.id}, city: ${histDaily.city}, temp: ${histDaily.temp}, accuracy: ${histDaily.accuracy}, hum:${histDaily.humidity}")
-    }
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -166,11 +153,5 @@ class ListOpenFragment : Fragment() {
 
         histDailyViewModel.readCheckedHistDailyById(HistDailyViewModel.currentId)
         histDailyViewModel.readHistDailyById(HistDailyViewModel.currentId)
-
-
     }
-
-
-
-
 }
