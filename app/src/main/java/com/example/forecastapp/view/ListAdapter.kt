@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.Holder>() {
-    public var forecastList = emptyList<HistDaily>()
+     var forecastList = emptyList<HistDaily>()
 
     class Holder(view: View): RecyclerView.ViewHolder(view)
 

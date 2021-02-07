@@ -48,6 +48,8 @@ class ListFragment : Fragment() {
         binding.recyclerViewList.adapter = adapter
         histDailyViewModel.readAll.observe(viewLifecycleOwner, Observer { daily ->
             adapter.setData(daily)
+
         })
     }
+
 }
