@@ -112,6 +112,7 @@ class ForecastFragment : Fragment() {
                 forecastViewModel.addToHistory(histDaily)
 
                 GlobalScope.launch {
+                    // Todo: repair it
                     delay(500)
                     val id = forecastViewModel.getMaxId()
                     Log.d("Compare (id):", id.toString())

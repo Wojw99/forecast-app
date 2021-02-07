@@ -1,21 +1,21 @@
 package com.example.forecastapp.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import com.example.forecastapp.R
-import com.example.forecastapp.databinding.FragmentCurrentBinding
-import com.example.forecastapp.databinding.FragmentForecastBinding
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.forecastapp.databinding.FragmentListOpenBinding
+import com.example.forecastapp.model.CheckedHistDaily
 import com.example.forecastapp.model.HistDaily
 import com.example.forecastapp.viewmodel.HistDailyViewModel
-import kotlin.math.roundToInt
 
 
 class ListOpenFragment : Fragment() {
+    private lateinit var histDailyViewModel : HistDailyViewModel
 
     private var _binding: FragmentListOpenBinding? = null
     private val binding get() = _binding!!
@@ -25,98 +25,35 @@ class ListOpenFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         _binding = FragmentListOpenBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        var temp = 70.0
-        var tempprob = "${temp}°C"
-        binding.tvtempprob.text=tempprob
+        histDailyViewModel = ViewModelProvider(this).get(HistDailyViewModel::class.java)
+        setup()
 
-        var press = 1019
-        var pressureprob = "${press} hPa"
-        binding.tvpressureprob.text = pressureprob
+        return view
+    }
 
-        var hum = 34
-        var humidityprob = "${hum}%"
-        binding.tvhumidityprob.text=humidityprob
+    private fun updateHistDailyView(histDaily: HistDaily){
+        // Tu musi zostać rozpisane aktulizowanie się widoku pogody prognozowanej
+        Log.d("Update", "id: ${histDaily.id}, city: ${histDaily.city}, temp: ${histDaily.temp}, accuracy: ${histDaily.accuracy}, hum:${histDaily.humidity}")
+    }
 
-        var windsp = 1.22
-        var windspeedprob = "${windsp} km/h"
-        binding.tvwindspeedprob.text = windspeedprob
+    private fun updateCheckedHistDailyView(checkedHistDaily: CheckedHistDaily){
+        // Tu musi zostać rozpisane aktulizowanie się widoku pogody rzeczywistej
+        Log.d("Update", "id: ${checkedHistDaily.id}, temp: ${checkedHistDaily.temp}, hum:${checkedHistDaily.humidity}")
+    }
 
-        var winddirect = 15.5
-        var directionwindprob = "${winddirect}°"
-        binding.tvdirectionwindprob.text = directionwindprob
+    private fun setup(){
+        histDailyViewModel.histDaily.observe(viewLifecycleOwner, Observer { daily ->
+            updateHistDailyView(daily)
+        })
 
-        var cloudns = 0.0
-        var cloudnessprob = "${cloudns}%"
-        binding.tvcloudnessprob.text = cloudnessprob
+        histDailyViewModel.checkedHistDaily.observe(viewLifecycleOwner, Observer { daily ->
+            updateCheckedHistDailyView(daily)
+        })
 
-        var UV = 2.99
-        var uvprob = "${UV}"
-        binding.tvUVprob.text = uvprob
-
-
-
-        //real parameters
-
-        var tempreal = 60.0
-        var tempreal2 = "${tempreal}°C"
-        binding.tvtemprel.text=tempreal2
-
-        var pressure = 1030
-        var pressurereal = "${pressure} hPa"
-        binding.tvpressurerel.text = pressurereal
-
-        var humidity = 34
-        var humidityreal = "${humidity}%"
-        binding.tvhumidityrel.text=humidityreal
-
-        var windspeed=1.20
-        var windspeedreal ="${windspeed} km/h"
-        binding.tvwindspeedrel.text=windspeedreal
-
-        var directionwind = 13.0
-        var directionwindreal = "${directionwind}°"
-        binding.tvdirectionwindrel.text = directionwindreal
-
-        var cloudness = 0.0
-        var cloudnessreal = "${cloudness}%"
-        binding.tvcloudnessrel.text=cloudnessreal
-
-        var uv = 3.0
-        var uvreal = "${uv}"
-        binding.tvUVrel.text = uvreal
-
-
-        //difference value
-
-        //var tempdiff = binding.tvtempdif.text
-        var pressurediff=binding.tvpressuredif.text
-        var humiditydiff = binding.tvhumiditydif.text
-        var windspeeddiff = binding.tvwindspeeddif.text
-        var winddirectdiff = binding.tvwinddirectdiff.text
-        var cloudnessdiff = binding.tvcloudnessdif.text
-        var uvdiff = binding.tvUVdif.text
-
-        var x = tempreal-temp
-
-        if(tempreal> temp)
-        {
-            var tempdiff = "+${x}"
-            binding.tvtempdif.text = tempdiff
-        }
-        else if (temp>tempreal)
-        {
-            var tempdiff = "${x}"
-            binding.tvtempdif.text = tempdiff
-        }
-        else
-        {
-            var tempdiff = "0"
-            binding.tvtempdif.text = tempdiff
-        }
-      return view
+        histDailyViewModel.readCheckedHistDailyById(HistDailyViewModel.currentId)
+        histDailyViewModel.readHistDailyById(HistDailyViewModel.currentId)
     }
 }
