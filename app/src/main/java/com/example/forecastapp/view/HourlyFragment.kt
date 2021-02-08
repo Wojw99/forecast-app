@@ -63,9 +63,9 @@ class HourlyFragment : Fragment() {
     private fun getForecastAndUpdateView(){
         try{
             if(ForecastViewModel.userCity.isEmpty())
-                hourlyViewModel.getOneCallForecast(ForecastViewModel.defaultLat, ForecastViewModel.defaultLon)
+                hourlyViewModel.getOneCallForecast(HourlyViewModel.defaultLat, HourlyViewModel.defaultLon)
             else
-                hourlyViewModel.getOneCallForecast(ForecastViewModel.userCity)
+                hourlyViewModel.getOneCallForecast(HourlyViewModel.userCity)
         } catch(ex: IOException){
             Toast.makeText(requireContext(), ex.message, Toast.LENGTH_SHORT).show()
         }
