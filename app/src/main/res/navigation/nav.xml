@@ -31,4 +31,9 @@
         android:label="@string/weather_list"
         tools:layout="@layout/fragment_list_open"
         />
+    <fragment
+        android:id="@+id/hourlyFragment"
+        android:name="com.example.forecastapp.view.HourlyFragment"
+        android:label="fragment_hourly"
+        tools:layout="@layout/fragment_hourly" />
 </navigation>

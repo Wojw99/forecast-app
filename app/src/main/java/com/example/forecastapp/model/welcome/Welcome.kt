@@ -10,7 +10,7 @@ data class Welcome(
         @SerializedName("current")
     val current: Current,
         @SerializedName("hourly")
-    val hourly: Hourly,
+    val hourly: List<Hourly>,
         @SerializedName("daily")
     val daily: List<Daily>,
         @SerializedName("lat")

@@ -22,7 +22,6 @@ class HourlyViewModel(application: Application) : AndroidViewModel(application) 
     val forecastBody: MutableLiveData<Welcome> = MutableLiveData()
     var forecastCity: String = ""
     private val forecastRepository = ForecastRepository()
-    private val histDailyRepository = HistDailyRepository(MyDatabase.getDatabase(application).historicalDailyDao())
 
     /**
      * Firstly, calls API for a geocoding object (cityName as argument) and gets coords from it.
@@ -40,24 +39,24 @@ class HourlyViewModel(application: Application) : AndroidViewModel(application) 
                 forecastCity = geocodeResponse.body()!!.name
             }
             else{
-                Log.d("ForecastViewModel", geocodeResponse.errorBody().toString())
-                Log.d("ForecastViewModel", geocodeResponse.code().toString())
+                Log.d("Hourly", geocodeResponse.errorBody().toString())
+                Log.d("Hourly", geocodeResponse.code().toString())
                 return@launch
             }
 
             val coords = geocodeResponse.body()!!.coord
-            Log.d("ForecastViewModel","I have coords: ${coords.lat}, ${coords.lon}")
+            Log.d("Hourly","I have coords: ${coords.lat}, ${coords.lon}")
 
             // Getting new forecast for given coords
-            val response = forecastRepository.getOneCallForecast(coords.lat, coords.lon)
-            Log.d("ForecastViewModel","I have a forecast: ${response.body()!!.current.weather[0].description}")
+            val response = forecastRepository.getOneCallForecast(coords.lat, coords.lon, "minutely")
+            Log.d("Hourly","I have a forecast: ${response.body()!!.current.weather[0].description}")
 
             if(response.isSuccessful){
                 forecastBody.value = response.body()!!
             }
             else{
-                Log.d("ForecastViewModel", response.errorBody().toString())
-                Log.d("ForecastViewModel", response.code().toString())
+                Log.d("Hourly", response.errorBody().toString())
+                Log.d("Hourly", response.code().toString())
                 return@launch
             }
 
@@ -72,7 +71,7 @@ class HourlyViewModel(application: Application) : AndroidViewModel(application) 
     fun getOneCallForecast(lat: Double, lon: Double) {
         viewModelScope.launch {
             // Todo: When lat and lon is same as previous then method calls localRepository with saved forecast
-            val response = forecastRepository.getOneCallForecast(lat, lon)
+            val response = forecastRepository.getOneCallForecast(lat, lon, "minutely")
 
             if(response.isSuccessful){
                 forecastCity = response.body()!!.timezone
@@ -84,12 +83,6 @@ class HourlyViewModel(application: Application) : AndroidViewModel(application) 
                 Log.d("ErrorCode:", response.code().toString())
             }
         }
-    }
-
-    private fun getAddress(context: Context, locationName: String): Address{
-        val geocoder = Geocoder(context)
-        val list = geocoder.getFromLocationName(locationName, 1)
-        return list[0]
     }
 
     companion object{

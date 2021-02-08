@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wall"
-    tools:context=".view.HourlyFragment">
+    tools:context=".view.HourlyFragment"
+    android:id="@+id/fragmentRoot">
 
     <TextView
-        android:id="@+id/tvCityh"
+        android:id="@+id/tvCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -24,7 +24,7 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/tvCoordh"
+        android:id="@+id/tvCoord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -33,11 +33,11 @@
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCityh"
+        app:layout_constraintTop_toBottomOf="@+id/tvCity"
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/tvDayh"
+        android:id="@+id/tvDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -47,11 +47,11 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCoordh"
+        app:layout_constraintTop_toBottomOf="@+id/tvCoord"
         tools:ignore="HardcodedText" />
 
     <Spinner
-        android:id="@+id/spinnerDaysh"
+        android:id="@+id/spinnerDays"
         android:layout_width="220dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
@@ -59,7 +59,7 @@
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDayh" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDay" />
 
     <LinearLayout
         android:id="@+id/layoutButtonsTemp"
@@ -70,18 +70,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerDaysh">
-
-        <ImageButton
-            android:id="@+id/buttonLefth"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="5dp"
-            android:rotation="180"
-            android:src="@drawable/ic_next"
-            android:scaleType="fitCenter"
-            android:background="@drawable/ic_transparent"
-            android:tint="@color/accent" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerDays">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -90,7 +79,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvTemph"
+                android:id="@+id/tvTemp"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:text=""
@@ -107,16 +96,6 @@
                 android:textColor="@color/font"
                 android:textSize="@dimen/text_small" />
         </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/buttonRighth"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="5dp"
-            android:src="@drawable/ic_next"
-            android:scaleType="fitCenter"
-            android:background="@drawable/ic_transparent"
-            android:tint="@color/accent" />
     </LinearLayout>
 
     <TextView
@@ -132,7 +111,7 @@
         app:layout_constraintTop_toBottomOf="@+id/layoutButtonsTemp" />
 
     <ImageView
-        android:id="@+id/imageViewh"
+        android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:contentDescription="@string/weather_icon"
@@ -151,11 +130,11 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/linearLayoutLeft"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewh">
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <!-- Humidity -->
         <TextView
-            android:id="@+id/tvPressureValueh"
+            android:id="@+id/tvPressureValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -165,7 +144,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph"
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -178,7 +157,7 @@
             android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp" />
 
         <!-- Wind speed -->
         <TextView
@@ -193,7 +172,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph"
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -206,7 +185,7 @@
             android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp" />
 
         <!-- Clouds -->
         <TextView
@@ -221,7 +200,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph"
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -234,7 +213,7 @@
             android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp" />
     </LinearLayout>
 
     <!-- Left layout -->
@@ -246,11 +225,11 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/linearLayoutRight"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewh">
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <!-- Humidity -->
         <TextView
-            android:id="@+id/tvHumidityValueh"
+            android:id="@+id/tvHumidityValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -260,7 +239,7 @@
             android:textSize="@dimen/text_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph"
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -273,7 +252,7 @@
             android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp" />
 
         <!-- Wind speed -->
         <TextView
@@ -288,7 +267,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph"
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -301,7 +280,7 @@
             android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp" />
 
         <!-- Clouds -->
         <TextView
@@ -316,7 +295,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph"
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -329,7 +308,7 @@
             android:textSize="@dimen/text_small"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemph" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTemp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
