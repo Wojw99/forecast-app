@@ -3,6 +3,7 @@ import com.example.forecastapp.model.welcome.Welcome
 import com.example.forecastapp.model.geocoding.Geocoding
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface OpenWeatherApi {

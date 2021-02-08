@@ -7,7 +7,7 @@ import androidx.room.TypeConverters
 import com.example.forecastapp.model.CheckedHistDaily
 import com.example.forecastapp.model.HistDaily
 
-@Database(entities = [HistDaily::class, CheckedHistDaily::class], version = 11, exportSchema = false)
+@Database(entities = [HistDaily::class, CheckedHistDaily::class], version = 12, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MyDatabase:RoomDatabase()
 {

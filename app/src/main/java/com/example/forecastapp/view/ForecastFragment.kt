@@ -152,7 +152,7 @@ class ForecastFragment : Fragment() {
     private fun compareForecastRequest(id: Int){
         val interval = getHoursInterval()
         val compareForecastRequest: WorkRequest = OneTimeWorkRequestBuilder<CompareForecast>()
-                .setInitialDelay(interval, TimeUnit.HOURS)
+                .setInitialDelay(interval, TimeUnit.SECONDS)
                 .addTag(id.toString())
                 .build()
         WorkManager.getInstance(requireContext()).enqueue(compareForecastRequest)
