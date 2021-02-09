@@ -15,6 +15,7 @@
     <string name="pressure">Ciśnienie</string>
     <string name="wind_direction">Kierunek wiatru</string>
     <string name="uv_index">Index UV</string>
+    <string name="temperature">Temperatura</string>
 
     <!-- Week list -->
     <string name="tomorrow">Jutro</string>
@@ -34,10 +35,21 @@
     <string name="cancel">Anuluj</string>
     <string name="ok">Ok</string>
     <string name="btn_open_desc">Open saved weather button</string>
+    <string name="q_mark">\?</string>
 
     <!-- Alerts -->
     <string name="city_changing">Zmień miasto</string>
     <string name="field_empty">Pole było puste!</string>
     <string name="forecast_added">Pomyślnie zapisano prognozę!</string>
+    <string name="gps_check">Nie udało się pobrać lokacji użytkownika. Rozważ wejście do ustawień
+        i nadanie aplikacji uprawnień do lokalizacji w celu dostarczenia prognozy dla dokładnych współrzędnych.</string>
+    <string name="error">Błąd</string>
+    <string name="perm_needed">Wymagane uprawnienia</string>
+    <string name="perm_needed_desc">Uprawnienia są wymagane do pobrania lokalizacji użytkownika
+        i wyświetlenia danych pogodowych dla tej lokalizacji.</string>
+
+    <!-- ListOpenFragment - titles -->
+    <string name="titleL"><u>Prognozowana</u></string>
+    <string name="titleR"><u>Rzeczywista</u></string>
 
 </resources>

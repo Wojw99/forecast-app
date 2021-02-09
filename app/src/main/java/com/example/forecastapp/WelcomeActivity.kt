@@ -14,41 +14,54 @@ import androidx.core.app.ActivityCompat
 import com.example.forecastapp.viewmodel.ForecastViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class WelcomeActivity : AppCompatActivity() {
-    private val locationCode = 1
+    private val locationCode = 100
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         findUserLocation()
     }
 
     /**
-     * Checks if user gave permissions and searches for his geolocation
+     * Checks if user gave permissions
      * */
     private fun findUserLocation(){
         val accessFineLocation = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        val accessCoarseLocation = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-        if (accessFineLocation != PackageManager.PERMISSION_GRANTED || accessCoarseLocation != PackageManager.PERMISSION_GRANTED) {
-            requestLocationPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-            requestLocationPermissions(Manifest.permission.ACCESS_COARSE_LOCATION)
-        }
-        else{
-            Log.d("MainActivity", "Permission granted")
-        }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if(location != null){
-                ForecastViewModel.defaultLat = location.latitude
-                ForecastViewModel.defaultLon = location.longitude
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+        // Check if the application granted permissions
+        if (accessFineLocation != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), locationCode)
+        } else {
+            // Wait for user geocode
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if(location != null){
+                    gotToMain(location.latitude, location.longitude)
+                } else {
+                    gotToMain()
+                }
+            }.addOnFailureListener {
+                showAlertBox()
             }
         }
+    }
+
+    /**
+     * Starts the MainActivity with setting default lat and lon as 0,0
+     * */
+    private fun gotToMain(lat: Double = 0.0, lon: Double = 0.0){
+        ForecastViewModel.defaultLat = lat
+        ForecastViewModel.defaultLon = lon
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     /**
@@ -57,18 +70,30 @@ class WelcomeActivity : AppCompatActivity() {
     private fun requestLocationPermissions(permission: String){
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
             AlertDialog.Builder(this)
-                .setTitle("Permission needed")
-                .setMessage("This permission is needed to check user geolocation.")
-                .setPositiveButton("OK") { _ : DialogInterface, _ : Int ->
+                .setTitle(getString(R.string.perm_needed))
+                .setMessage(getString(R.string.perm_needed_desc))
+                .setPositiveButton(getString(R.string.ok)) { _ : DialogInterface, _ : Int ->
                     ActivityCompat.requestPermissions(this@WelcomeActivity,
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                        locationCode)
+                        arrayOf(permission), locationCode)
                 }
-                .setNegativeButton("Cancel") { _ : DialogInterface, _ : Int -> }
+                .setNegativeButton(getString(R.string.cancel)) { _ : DialogInterface, _ : Int -> }
                 .create().show()
         } else {
             ActivityCompat.requestPermissions(this, arrayOf(permission), locationCode)
         }
+    }
+
+    /**
+     * Shows alert with information about canceled granting location permissions.
+     * */
+    private fun showAlertBox(){
+        AlertDialog.Builder(this)
+                .setTitle(getString(R.string.error))
+                .setMessage(getString(R.string.gps_check))
+                .setPositiveButton(getString(R.string.ok)) { _ : DialogInterface, _ : Int ->
+                    gotToMain()
+                }
+                .create().show()
     }
 
     /**
@@ -81,9 +106,11 @@ class WelcomeActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if(requestCode == locationCode){
-            if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                && grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Permission granted!", Toast.LENGTH_SHORT).show()
+            if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                findUserLocation()
+            }
+            else{
+                showAlertBox()
             }
         }
     }

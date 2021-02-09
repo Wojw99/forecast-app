@@ -1,278 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wall"
-    tools:context=".view.CurrentFragment">
+    android:background="@drawable/wall">
 
-    <TextView
-        android:id="@+id/tvCity"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="..."
-        android:textAlignment="center"
-        android:textSize="36sp"
-        android:textColor="@color/accent"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
+        android:paddingVertical="16dp"
+        tools:context=".view.CurrentFragment">
 
-    <TextView
-        android:id="@+id/tvCoord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="56' 5'' E, 67' 3'' N"
-        android:textSize="22sp"
-        android:textColor="@color/font"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCity"
-        tools:ignore="HardcodedText"/>
-
-    <TextView
-        android:id="@+id/tvDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="11 stycznia 2021"
-        android:textSize="20sp"
-        android:textColor="@color/font"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCoord"
-        tools:ignore="HardcodedText"/>
-
-    <TextView
-        android:id="@+id/tvTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text=""
-        android:textColor="@color/font"
-        android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDay"
-        tools:ignore="HardcodedText"/>
-
-    <TextView
-        android:id="@+id/tvBorder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- - - - - - - - - -"
-        android:textSize="30sp"
-        android:textColor="@color/font"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:padding="10dp"
-        android:src="@drawable/ic_transparent"
-        android:contentDescription="@string/weather_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvBorder"/>
-
-    <!-- Right layout -->
-    <LinearLayout
-        android:id="@+id/linearLayoutRight"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayoutLeft"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
-
-        <!-- Humidity -->
         <TextView
-            android:id="@+id/tvPressureValue"
+            android:id="@+id/tvCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="1005 hPa"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_medium"
+            android:text="..."
+            android:textAlignment="center"
+            android:textSize="36sp"
+            android:textColor="@color/accent"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tvCoord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="56' 5'' E, 67' 3'' N"
+            android:textSize="22sp"
+            android:textColor="@color/font"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCity"
             tools:ignore="HardcodedText"/>
 
         <TextView
-            android:id="@+id/tvPressure"
+            android:id="@+id/tvDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/pressure"
+            android:layout_marginTop="2dp"
+            android:text="11 stycznia 2021"
+            android:textSize="20sp"
             android:textColor="@color/font"
-            android:textSize="@dimen/text_small"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCoord"
+            tools:ignore="HardcodedText"/>
+
+        <TextView
+            android:id="@+id/tvTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text=""
+            android:textColor="@color/font"
+            android:textSize="60sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDay"
+            tools:ignore="HardcodedText"/>
+
+        <TextView
+            android:id="@+id/tvBorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- - - - - - - - - -"
+            android:textSize="30sp"
+            android:textColor="@color/font"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
 
-        <!-- Wind speed -->
-        <TextView
-            android:id="@+id/tvWindDegreevalue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:text="56"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="bold"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_transparent"
+            android:contentDescription="@string/weather_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
-            tools:ignore="HardcodedText"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvBorder"/>
 
-        <TextView
-            android:id="@+id/tvWindDegree"
-            android:layout_width="wrap_content"
+        <!-- Right layout -->
+        <LinearLayout
+            android:id="@+id/linearLayoutRight"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/wind_direction"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_small"
+            android:layout_marginEnd="32dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
+            app:layout_constraintStart_toEndOf="@+id/linearLayoutLeft"
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-        <!-- Clouds -->
-        <TextView
-            android:id="@+id/tvUvIndexValue"
-            android:layout_width="wrap_content"
+            <!-- Humidity -->
+            <TextView
+                android:id="@+id/tvPressureValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="1005 hPa"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"
+                tools:ignore="HardcodedText"/>
+
+            <TextView
+                android:id="@+id/tvPressure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/pressure"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
+
+            <!-- Wind speed -->
+            <TextView
+                android:id="@+id/tvWindDegreevalue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="56"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"
+                tools:ignore="HardcodedText"/>
+
+            <TextView
+                android:id="@+id/tvWindDegree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/wind_direction"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
+
+            <!-- Clouds -->
+            <TextView
+                android:id="@+id/tvUvIndexValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="0.71"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"
+                tools:ignore="HardcodedText"/>
+
+            <TextView
+                android:id="@+id/tvUvIndex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/uv_index"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
+        </LinearLayout>
+
+        <!-- Left layout -->
+        <LinearLayout
+            android:id="@+id/linearLayoutLeft"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:text="0.71"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="32dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayoutRight"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
-            tools:ignore="HardcodedText"/>
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-        <TextView
-            android:id="@+id/tvUvIndex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/uv_index"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
-    </LinearLayout>
+            <!-- Humidity -->
+            <TextView
+                android:id="@+id/tvHumidityValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="75%"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"
+                tools:ignore="HardcodedText"/>
 
-    <!-- Left layout -->
-    <LinearLayout
-        android:id="@+id/linearLayoutLeft"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayoutRight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+            <TextView
+                android:id="@+id/tvHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/humidity"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
 
-        <!-- Humidity -->
-        <TextView
-            android:id="@+id/tvHumidityValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="75%"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
-            tools:ignore="HardcodedText"/>
+            <!-- Wind speed -->
+            <TextView
+                android:id="@+id/tvWindSpeedValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="8km/h"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"
+                tools:ignore="HardcodedText"/>
 
-        <TextView
-            android:id="@+id/tvHumidity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/humidity"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
+            <TextView
+                android:id="@+id/tvWindSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/wind_speed"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
 
-        <!-- Wind speed -->
-        <TextView
-            android:id="@+id/tvWindSpeedValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:text="8km/h"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
-            tools:ignore="HardcodedText"/>
+            <!-- Clouds -->
+            <TextView
+                android:id="@+id/tvCloudsValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="80%"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_medium"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"
+                tools:ignore="HardcodedText"/>
 
-        <TextView
-            android:id="@+id/tvWindSpeed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/wind_speed"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
+            <TextView
+                android:id="@+id/tvClouds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/clouds"
+                android:textColor="@color/font"
+                android:textSize="@dimen/text_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
+        </LinearLayout>
 
-        <!-- Clouds -->
-        <TextView
-            android:id="@+id/tvCloudsValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:text="80%"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_medium"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"
-            tools:ignore="HardcodedText"/>
-
-        <TextView
-            android:id="@+id/tvClouds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/clouds"
-            android:textColor="@color/font"
-            android:textSize="@dimen/text_small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTemp"/>
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

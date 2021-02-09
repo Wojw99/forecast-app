@@ -79,6 +79,6 @@ class CompareForecast(appContext: Context, workerParams: WorkerParameters) :
         if(daily1.uvi == daily2.current.uvi) count += 1
         if(daily1.weather == daily2.current.weather[0].description) count += 1
 
-        return count / 8.0
+        return (count / 8.0) * 100
     }
 }

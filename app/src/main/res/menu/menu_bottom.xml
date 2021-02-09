@@ -4,10 +4,10 @@
         android:id="@+id/forecastFragment"
         android:title="@string/weather_forecast"
         android:icon="@drawable/ic_ac_unit"/>
-    <item
-        android:id="@+id/hourlyFragment"
-        android:title="48h"
-        android:icon="@drawable/ic_open"/>
+<!--    <item-->
+<!--        android:id="@+id/hourlyFragment"-->
+<!--        android:title="48h"-->
+<!--        android:icon="@drawable/ic_open"/>-->
     <item
         android:id="@+id/currentFragment"
         android:title="@string/weather_current"

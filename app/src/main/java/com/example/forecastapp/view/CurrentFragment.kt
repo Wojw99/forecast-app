@@ -130,7 +130,6 @@ class CurrentFragment : Fragment() {
      * */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateView(welcome: Welcome){
-        // Todo: weather icon changing
         val directionX = if (welcome.lon > 0) "E" else "W"
         val directionY = if (welcome.lat > 0) "N" else "S"
         val coords = "${welcome.lat} $directionY, ${welcome.lon} $directionX"
