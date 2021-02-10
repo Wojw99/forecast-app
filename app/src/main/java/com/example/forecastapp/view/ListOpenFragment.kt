@@ -1,39 +1,27 @@
 package com.example.forecastapp.view
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.text.HtmlCompat
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.findNavController
 import com.example.forecastapp.R
-import com.example.forecastapp.databinding.FragmentCurrentBinding
-import com.example.forecastapp.databinding.FragmentForecastBinding
 import com.example.forecastapp.databinding.FragmentListOpenBinding
 import com.example.forecastapp.model.CheckedHistDaily
 import com.example.forecastapp.model.HistDaily
 import com.example.forecastapp.viewmodel.HistDailyViewModel
 import com.example.forecastapp.viewmodel.HistDailyViewModel.Companion.currentId
-import kotlinx.android.synthetic.main.fragment_forecast.*
-import kotlinx.android.synthetic.main.fragment_list_open.*
-import kotlinx.android.synthetic.main.fragment_list_open.view.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.math.round
-import kotlin.math.roundToInt
 
 class ListOpenFragment : Fragment() {
     private var _binding: FragmentListOpenBinding? = null
@@ -52,9 +40,9 @@ class ListOpenFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentListOpenBinding.inflate(inflater, container, false)
         val view = binding.root
-
         histDailyViewModel = ViewModelProvider(requireActivity()).get(HistDailyViewModel::class.java)
 
+        setHasOptionsMenu(true)
         setup()
 
       return view
@@ -65,7 +53,9 @@ class ListOpenFragment : Fragment() {
      * */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateHistDailyView(histDaily: HistDaily?){
-        if(histDaily == null) return
+        if(histDaily == null) {
+            return
+        }
 
         val directionX = if (histDaily.lon > 0) "E" else "W"
         val directionY = if (histDaily.lat > 0) "N" else "S"
@@ -74,15 +64,14 @@ class ListOpenFragment : Fragment() {
 
         binding.tvCity.text = histDaily.city
 
-        val accuracy = "Poprawność: ${histDaily.accuracy}%"
-        binding.tvAccuracy.text = accuracy
+        var accuracyStr = "Poprawność: ${histDaily.accuracy}"
+        accuracyStr += if (histDaily.accuracy != "?") "%" else ""
+        binding.tvAccuracy.text = accuracyStr
 
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
         binding.tvDay.text = histDaily.forecastDate.format(formatter)
 
-        val tempValue = (histDaily.temp - 273.15).roundToInt()
-        val temp = "${tempValue}°C"
-        binding.tvTempValueL.text = temp
+        binding.tvTempValueL.text = formatTemperature(histDaily.temp)
 
         val clouds = "${histDaily.clouds}%"
         binding.tvCloudsValueL.text = clouds
@@ -103,14 +92,28 @@ class ListOpenFragment : Fragment() {
     }
 
     /**
+     * Transform temperature Fahrenheit to Celsius and format value to suitable string
+     * */
+    private fun formatTemperature(temp: Double) : String{
+        val toCelsius = 273.15
+        val decForm = DecimalFormat("#.##")
+        decForm.roundingMode = RoundingMode.CEILING
+
+        val tempValue = temp - toCelsius
+
+        return "${decForm.format(tempValue)}°C"
+    }
+
+    /**
      * Updates the right side of the screen (with a real weather)
      * */
     private fun updateCheckedHistDailyView(checkedHistDaily: CheckedHistDaily?){
-        if(checkedHistDaily == null) return
+        if(checkedHistDaily == null) {
+            clearCenterAndRight()
+            return
+        }
 
-        val tempValue = (checkedHistDaily.temp - 273.15).roundToInt()
-        val temp = "${tempValue}°C"
-        binding.tvTempValueR.text = temp
+        binding.tvTempValueR.text = formatTemperature(checkedHistDaily.temp)
 
         val clouds = "${checkedHistDaily.clouds}%"
         binding.tvCloudsValueR.text = clouds
@@ -130,11 +133,38 @@ class ListOpenFragment : Fragment() {
         binding.tvUvIndexValueR.text = checkedHistDaily.uvi.toString()
     }
 
+    /**
+     * Returns center and right side of the screen to the initial state
+     * */
+    private fun clearCenterAndRight(){
+        val qMark = "?"
+        binding.tvTempValueR.text = qMark
+        binding.tvCloudsValueR.text = qMark
+        binding.tvHumidityValueR.text = qMark
+        binding.tvWindDegreeValueR.text = qMark
+        binding.tvWindSpeedValueR.text = qMark
+        binding.tvPressureValueR.text = qMark
+        binding.tvUvIndexValueR.text = qMark
+
+        val empty = ""
+        binding.tvTempValueC.text = empty
+        binding.tvCloudsValueC.text = empty
+        binding.tvHumidityValueC.text = empty
+        binding.tvWindDegreeValueC.text = empty
+        binding.tvWindSpeedValueC.text = empty
+        binding.tvPressureValueC.text = empty
+        binding.tvUvIndexValueC.text = empty
+    }
+
+    /**
+     * Updates the center of the screen with calculated difference of HistDaily
+     * and CheckedHistDaily
+     * */
     private fun updateDataDifference(histDaily: HistDaily?, checkedHistDaily: CheckedHistDaily?){
         if (histDaily == null || checkedHistDaily == null){
             return
         }
-        calculateDiff(histDaily.temp.roundToInt(), checkedHistDaily.temp.roundToInt(), binding.tvTempValueC)
+        calculateDiff(histDaily.temp, checkedHistDaily.temp, binding.tvTempValueC)
         calculateDiff(histDaily.clouds, checkedHistDaily.clouds, binding.tvCloudsValueC)
         calculateDiff(histDaily.humidity, checkedHistDaily.humidity, binding.tvHumidityValueC)
         calculateDiff(histDaily.pressure, checkedHistDaily.pressure, binding.tvPressureValueC)
@@ -150,16 +180,17 @@ class ListOpenFragment : Fragment() {
         val diff = val2 - val1
         val df = DecimalFormat("#.##")
         df.roundingMode = RoundingMode.CEILING
+        val diffForm = df.format(diff)
 
         if (diff > 0){
-            val diffStr = "+${df.format(diff)}"
+            val diffStr = "+${diffForm}"
             textView.text = diffStr
             textView.setTextColor(Color.LTGRAY)
         } else if (diff < 0){
-            textView.text = df.format(diff)
+            textView.text = diffForm
             textView.setTextColor(Color.LTGRAY)
         } else {
-            textView.text = df.format(diff)
+            textView.text = diffForm
             textView.setTextColor(Color.GREEN)
         }
     }
@@ -190,5 +221,37 @@ class ListOpenFragment : Fragment() {
 
         histDailyViewModel.readCheckedHistDailyById(currentId)
         histDailyViewModel.readHistDailyById(currentId)
+    }
+
+    /**
+     * Shows alert with information about deleting saved forecast (it is forever). Next, delete
+     * the model and move up.
+     * */
+    private fun showAlertAndProceed(){
+        AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.caution))
+                .setMessage(getString(R.string.delete_forever))
+                .setPositiveButton(getString(R.string.yes)) { _ : DialogInterface, _ : Int ->
+                    histDailyViewModel.deleteCurrentDaily()
+                    findNavController().navigateUp()
+                    Toast.makeText(requireContext(), getText(R.string.success), Toast.LENGTH_SHORT)
+                            .show()
+                }
+                .setNegativeButton(getString(R.string.no)) { _ : DialogInterface, _ : Int ->
+
+                }
+                .create().show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_top, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.menuDelete){
+            showAlertAndProceed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

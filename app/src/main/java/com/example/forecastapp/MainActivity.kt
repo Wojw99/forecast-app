@@ -2,6 +2,7 @@ package com.example.forecastapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -30,10 +31,20 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         val appBarConfiguration =
-            AppBarConfiguration(setOf(R.id.forecastFragment, R.id.currentFragment, R.id.hourlyFragment,
+            AppBarConfiguration(setOf(R.id.forecastFragment, R.id.currentFragment,
                 R.id.listFragment, R.id.listOpenFragment))
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        setupActionBarWithNavController(navController)
         bottomNavigationView.setupWithNavController(navController)
+    }
+
+    /**
+    * Move up whenever user chooses to navigate up within application's activity
+    * hierarchy from the action bar.
+    * */
+    override fun onSupportNavigateUp(): Boolean {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

@@ -34,8 +34,12 @@
     <string name="fbutton_description">Zapisz pogodę</string>
     <string name="cancel">Anuluj</string>
     <string name="ok">Ok</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
     <string name="btn_open_desc">Open saved weather button</string>
     <string name="q_mark">\?</string>
+    <string name="delete">Delete</string>
+    <string name="success">Sukces!</string>
 
     <!-- Alerts -->
     <string name="city_changing">Zmień miasto</string>
@@ -44,6 +48,8 @@
     <string name="gps_check">Nie udało się pobrać lokacji użytkownika. Rozważ wejście do ustawień
         i nadanie aplikacji uprawnień do lokalizacji w celu dostarczenia prognozy dla dokładnych współrzędnych.</string>
     <string name="error">Błąd</string>
+    <string name="caution">Uwaga!</string>
+    <string name="delete_forever">Wybrana prognoza zostanie usunięta na zawsze. Czy chcesz kontynuować?</string>
     <string name="perm_needed">Wymagane uprawnienia</string>
     <string name="perm_needed_desc">Uprawnienia są wymagane do pobrania lokalizacji użytkownika
         i wyświetlenia danych pogodowych dla tej lokalizacji.</string>

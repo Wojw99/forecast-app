@@ -12,7 +12,13 @@ import com.example.forecastapp.model.welcome.Welcome
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
+/**
+ * Class uses WorkManager and is used for checking weather in the background when the
+ * application is turned off.
+ * */
 class CompareForecast(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
 
@@ -20,9 +26,14 @@ class CompareForecast(appContext: Context, workerParams: WorkerParameters) :
     private val checkedDailyRepository = CheckedDailyRepository(MyDatabase.getDatabase(appContext).checkedHistDailyDao())
     private val forecastRepository = ForecastRepository()
 
+    /**
+     * Starts when the given interval of time is up. The function gets a new forecast
+     * and compares it to the historical forecast saved in the database. Then the new forecast
+     * is saved.
+     * */
     override fun doWork(): Result {
         for(tag in this.tags){
-            // Check if tag is numeric
+            // Check if tag is numeric. Numeric tag is a interval of time
             if(tag.matches("-?\\d+(\\.\\d+)?".toRegex())){
                 GlobalScope.launch {
                     val histDaily = histDailyRepository.selectbyid(tag.toInt())
@@ -34,9 +45,14 @@ class CompareForecast(appContext: Context, workerParams: WorkerParameters) :
                     Log.d("Compare", welcome.body().toString())
 
                     if(welcome.body() != null){
-                        val accuracy = countAccuracy(histDaily, welcome.body()!!)
-                        histDaily.accuracy = accuracy.toString()
+                        val accuracyCounter = AccuracyCounter()
+                        val accuracy = accuracyCounter.countAccuracy(histDaily, welcome.body()!!)
+                        val decForm = DecimalFormat("#.##")
+                        decForm.roundingMode = RoundingMode.CEILING
+                        histDaily.accuracy = decForm.format(accuracy)
+
                         histDailyRepository.update(histDaily)
+
                         addToCheckedDaily(welcome.body()!!, histDaily)
                     }
                 }
@@ -45,6 +61,9 @@ class CompareForecast(appContext: Context, workerParams: WorkerParameters) :
         return Result.success()
     }
 
+    /**
+     * Adds a new model to the checked table in the history database
+     * */
     private suspend fun addToCheckedDaily(welcome: Welcome, histDaily: HistDaily){
         val current = welcome.current
         val checkedHistDaily = CheckedHistDaily(
@@ -65,20 +84,5 @@ class CompareForecast(appContext: Context, workerParams: WorkerParameters) :
                 checked = true
         )
         checkedDailyRepository.add(checkedHistDaily)
-    }
-
-    private fun countAccuracy(daily1: HistDaily, daily2: Welcome): Double{
-        var count = 0.0
-
-        if(daily1.temp == daily2.current.temp) count += 1
-        if(daily1.humidity == daily2.current.humidity) count += 1
-        if(daily1.pressure == daily2.current.pressure) count += 1
-        if(daily1.wind_speed == daily2.current.windSpeed) count += 1
-        if(daily1.wind_deg == daily2.current.windDeg) count += 1
-        if(daily1.clouds == daily2.current.clouds) count += 1
-        if(daily1.uvi == daily2.current.uvi) count += 1
-        if(daily1.weather == daily2.current.weather[0].description) count += 1
-
-        return (count / 8.0) * 100
     }
 }

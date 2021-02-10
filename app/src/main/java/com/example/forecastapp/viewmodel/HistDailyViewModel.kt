@@ -31,6 +31,23 @@ class HistDailyViewModel(application: Application): AndroidViewModel(application
         readAll = histRepository.showall
     }
 
+    fun deleteAllDaily(){
+        viewModelScope.launch {
+            histRepository.deleteall()
+        }
+    }
+
+    fun deleteCurrentDaily(){
+        viewModelScope.launch {
+            if(histDaily.value != null){
+                histRepository.delete(histDaily.value!!)
+            }
+            if(checkedHistDaily.value != null){
+                checkRepository.delete(checkedHistDaily.value!!)
+            }
+        }
+    }
+
     fun readHistDailyById(id: Int){
         viewModelScope.launch {
             histDaily.value = histRepository.selectbyid(id)

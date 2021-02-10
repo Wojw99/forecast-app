@@ -62,6 +62,7 @@ class WelcomeActivity : AppCompatActivity() {
         ForecastViewModel.defaultLon = lon
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     /**
