@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">ForecastApp</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string name="weather_current">Dzisiaj</string>
-    <string name="weather_forecast">Prognoza</string>
-    <string name="weather_list">Poprawność</string>
-</resources>
